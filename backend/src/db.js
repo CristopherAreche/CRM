@@ -1,26 +1,21 @@
-// require("dotenv").config();
+require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 const dbFill = require("./controllers/utils/dbFill");
-// const { config } = require("./config/config");
+const { config } = require("./config/config");
 
 //Local
-// const sequelize = new Sequelize(
-//   config.dbName,
-//   config.dbUser,
-//   config.dbPassword,
-//   {
-//     host: config.dbHost,
-//     dialect: "postgres",
-//     logging: false,
-//   }
-// );
+const sequelize = new Sequelize(config.name, config.user, config.password, {
+  host: config.host,
+  dialect: "postgres",
+  logging: false,
+});
 
 // remote
-const sequelize = new Sequelize(
-  `postgres://dbuser:nY70BdvpmUiHdxa7pFgYrAPohiGq7HNl@dpg-cm3j9qun7f5s73bpb7og-a.oregon-postgres.render.com/crm_db_d3db`
-);
+// const sequelize = new Sequelize(
+//   `postgres://dbuser:nY70BdvpmUiHdxa7pFgYrAPohiGq7HNl@dpg-cm3j9qun7f5s73bpb7og-a.oregon-postgres.render.com/crm_db_d3db`
+// );
 
 const basename = path.basename(__filename);
 
