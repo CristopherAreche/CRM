@@ -8,7 +8,7 @@ const salesman = require("../../models/salesman");
 const product = require("../../models/product");
 const boss = require("../../models/boss");
 const relationships = require("./relationships");
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, PORT } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, PORT, DB_PORT } = process.env;
 const database = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${PORT}/${DB_NAME}`,
   {

@@ -1,15 +1,20 @@
 require("dotenv").config();
+const { config } = require("./config/config");
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 const dbFill = require("./controllers/utils/dbFill");
-const { config } = require("./config/config");
 
 const sequelize = new Sequelize(config.database, config.user, config.password, {
   host: config.host,
   dialect: "postgres",
   logging: false,
 });
+
+sequelize
+  .authenticate()
+  .then(() => console.log("Database connected."))
+  .catch((err) => console.log("Error: " + err));
 
 const basename = path.basename(__filename);
 
