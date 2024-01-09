@@ -1,13 +1,12 @@
 require("dotenv").config();
 
 const config = {
-  env: process.env.NODE_ENV || "dev",
-  host: process.env.DB_HOST || "localhost",
-  db_port: process.env.DB_PORT || 5444,
-  user: process.env.DB_USER || "postgres",
-  database: process.env.DB_NAME || "postgres",
-  password: process.env.DB_PASSWORD || "mysecretpassword",
-  port: process.env.PORT || 3000,
+  database: process.env.DB_DATABASE,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  db_port: process.env.DB_PORT,
+  port: process.env.PORT,
 };
 
 module.exports = { config };

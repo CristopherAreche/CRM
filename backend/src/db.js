@@ -5,11 +5,26 @@ const fs = require("fs");
 const path = require("path");
 const dbFill = require("./controllers/utils/dbFill");
 
-const sequelize = new Sequelize(config.database, config.user, config.password, {
-  host: config.host,
-  dialect: "postgres",
-  logging: false,
-});
+// const sequelize = new Sequelize(
+//   config.database,
+//   config.username,
+//   config.password,
+//   {
+//     host: config.host,
+//     dialect: "postgres",
+//     logging: false,
+//   }
+// );
+
+const sequelize = new Sequelize(
+  "dbcrm_szr2",
+  "dbuser",
+  "PnQGr6AF8fKAnDbqu3uEajzqP9sPM7IV",
+  {
+    host: "dpg-cmenceed3nmc739atrg0-a",
+    dialect: "postgres",
+  }
+);
 
 sequelize
   .authenticate()
@@ -73,7 +88,7 @@ Task.belongsTo(Client);
 Task.belongsTo(Salesman);
 
 dbFill(sequelize.models).then(() => {
-  // console.log("Se ha ejecutado llenar en la linea 91 de db.js");
+  console.log("Se ha ejecutado llenar en la linea 91 de db.js");
 });
 
 module.exports = {

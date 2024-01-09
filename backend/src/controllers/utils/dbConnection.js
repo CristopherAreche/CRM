@@ -8,13 +8,24 @@ const salesman = require("../../models/salesman");
 const product = require("../../models/product");
 const boss = require("../../models/boss");
 const relationships = require("./relationships");
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, PORT, DB_PORT } = process.env;
+const { DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME, PORT, DB_PORT } =
+  process.env;
+// const database = new Sequelize(
+//   `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${PORT}/${DB_NAME}`,
+//   {
+//     logging: false,
+//     native: false,
+//     force: false,
+//   }
+// );
+
 const database = new Sequelize(
-  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${PORT}/${DB_NAME}`,
+  "dbcrm_szr2",
+  "dbuser",
+  "PnQGr6AF8fKAnDbqu3uEajzqP9sPM7IV",
   {
-    logging: false,
-    native: false,
-    force: false,
+    host: "dpg-cmenceed3nmc739atrg0-a",
+    dialect: "postgres",
   }
 );
 
