@@ -3,7 +3,6 @@ import Faq from "../components/homeSections/Faq";
 import Hero from "../components/homeSections/Hero";
 import Detail from "../components/homeSections/Detail";
 import Testimonials from "../components/homeSections/Testimonials";
-import { Link } from "react-router-dom";
 import Functionalities from "../components/homeSections/Functionalities";
 const Home = () => {
   return (
