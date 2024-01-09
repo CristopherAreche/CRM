@@ -30,24 +30,26 @@ const TotalSalesChart = ({ annual_sales = [] }) => {
   const data = [...annual_sales];
 
   const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   if (data.length !== 0) {
+    console.log("data ->", data);
     for (let i = 0; i < data.length; i++) {
       const element = { ...data[i] };
       const [month, year] = element.month.split("/");
+      console.log("->", month);
       element["date"] = new Date(
         `${year}-${months.findIndex((m) => m === month) + 1}-01`
       );

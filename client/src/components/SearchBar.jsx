@@ -30,7 +30,7 @@ const SearchBar = ({ data, onSearch, onReset }) => {
   return (
     <div className="relative">
       <input
-        placeholder="Buscar..."
+        placeholder="Search..."
         className="py-2 pl-10 z-0 pr-6 rounded-full w-80 bg-base-light/40 outline-none"
         type="text"
         value={searchTerm}

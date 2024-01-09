@@ -10,18 +10,19 @@ const ClientsItems = ({ item, onCheckbox, onSelected }) => {
   const [sellerName, setSellerName] = useState("");
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.User.id);
+
   useEffect(() => {
-    if (item.salesmanId)
+    if (item.salesmanId) {
       getSeller({ bossId: user, id: item.salesmanId }).then((res) => {
-        setLoading(true);
-        setSellerName(res.name);
         setLoading(false);
+        setSellerName(res.name);
       });
+    }
   }, [dispatch, item.salesmanId, user]);
 
   return (
     <tr key={item.id} className="border-b dark:border-base/30">
-      <td className="whitespace-nowrap  px-6 py-4 font-medium">
+      <td className="whitespace-nowrap px-6 py-4 font-medium">
         <input
           id={`checkbox-${item.id}`}
           type="checkbox"
@@ -30,39 +31,35 @@ const ClientsItems = ({ item, onCheckbox, onSelected }) => {
           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
         />
       </td>
-      <td className="whitespace-nowrap  px-6 py-4  font-medium text-secondary hover:text-secondary/80 hover:underline transition-all">
-        {/* <Link to={`/dashboard/client/${item.id}`}> */}
+      <td className="whitespace-nowrap px-6 py-4 font-medium text-secondary hover:text-secondary/80 hover:underline transition-all">
         <button onClick={() => setIsShow(true)}>{item.name}</button>
         {isShow && (
           <ModalHistory clientDetail={item} onClose={() => setIsShow(false)} />
         )}
-        {/* </Link> */}
       </td>
-      <td className="whitespace-nowrap  px-6 py-4  font-medium text-yellow-400 hover:text-yellow-400/80 hover:underline transition-all">
+      <td className="whitespace-nowrap px-6 py-4 font-medium text-yellow-400 hover:text-yellow-400/80 hover:underline transition-all">
         {loading ? (
           <RiLoader4Fill className="animate-spin text-4xl text-secondary text-center" />
         ) : (
           <>{sellerName}</>
         )}
       </td>
-      <td className="whitespace-nowrap  px-6 py-4 text-white">
+      <td className="whitespace-nowrap px-6 py-4 text-white">
         {item.totalPurchased}
       </td>
       <td
-        className={`whitespace-nowrap  px-6 py-4 ${
+        className={`whitespace-nowrap px-6 py-4 ${
           item.enable ? "text-emerald-200" : "text-red-200"
         }`}
       >
-        {" "}
-        {item.enable ? "Habilitado" : "Desabilitado"}
+        {item.enable ? "Enabled" : "Disabled"}
       </td>
       <td
-        className={`whitespace-nowrap  px-6 py-4 ${
+        className={`whitespace-nowrap px-6 py-4 ${
           item.vip ? "text-orange-200" : "text-white"
         }`}
       >
-        {" "}
-        {item.vip ? "Si" : "No"}
+        {item.vip ? "Yes" : "No"}
       </td>
     </tr>
   );

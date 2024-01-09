@@ -51,68 +51,68 @@ const ClientsList = () => {
     );
   } else if (clientsStatus === "succeeded") {
     return (
-      <section className="overflow-x-auto lg:min-w-full mt-4 min-h-96 lg:h-96 overflow-y-auto pb-4">
+      <section className="overflow-x-auto lg:min-w-full mt-4 min-h-96 lg:h-auto pb-4">
         <header className="flex justify-between w-screen lg:w-full px-8 py-4   bg-base-light/30 rounded-tr-md rounded-tl-md  ">
-          <h3 className=" text-xl font-medium text-light flex items-center gap-x-2">
+          <h3 className=" text-xl font-medium text-light flex items-center gap-x-2 uppercase">
             <RiFilter3Line className="text-2xl" />
-            Tus clientes
+            Your Clients
           </h3>
           <section className="flex gap-x-6 items-center">
             <div className="flex flex-col items-center">
               <p className="text-2xl font-bold text-light">{clients.length}</p>
-              <span className="text-light/70 font-medium text-xs">
-                Clientes
-              </span>
+              <span className="text-light/70 font-medium text-xs">Clients</span>
             </div>
             <div className="flex flex-col items-center">
               <p className="text-2xl font-bold text-light">{clientHab}</p>
               <span className="text-emerald-200 font-medium text-xs">
-                Habilitados
+                Enabled
               </span>
             </div>
             <div className="flex flex-col items-center">
               <p className="text-2xl font-bold text-light">${total}</p>
               <span className="text-light/70 font-medium text-xs">
-                Balance actual
+                Current Balance
               </span>
             </div>
           </section>
         </header>
-        <table className="min-w-full  text-center text-sm font-regular shadow-md rounded-sm pb-4">
-          <thead className=" font-medium text-light/75  dark:bg-base-light/30 rounded-md">
-            <tr>
-              <th scope="col" className=" px-6 py-4">
-                CB
-              </th>
-              <th scope="col" className=" px-6 py-4">
-                Nombre
-              </th>
-              <th scope="col" className=" px-6 py-4">
-                Su Vendedor
-              </th>
-              <th scope="col" className=" px-6 py-4">
-                Total Comprado
-              </th>
-              <th scope="col" className=" px-6 py-4">
-                Estado
-              </th>
-              <th scope="col" className=" px-6 py-4">
-                VIP
-              </th>
-            </tr>
-          </thead>
-          <tbody className=" dark:border-light dark:bg-base-light/60">
-            {Array.isArray(clients) &&
-              clients?.map((item) => (
-                <ClientsItems
-                  item={item}
-                  key={item.id}
-                  onCheckbox={handleCheckboxChange}
-                  onSelected={selectedCheckbox}
-                />
-              ))}
-          </tbody>
-        </table>
+        <div className="overflow-y-auto  h-[500px]">
+          <table className="min-w-full   text-center text-sm font-regular shadow-md rounded-sm pb-4">
+            <thead className=" font-medium text-light/75  dark:bg-base-light/30 rounded-md">
+              <tr>
+                <th scope="col" className=" px-6 py-4">
+                  CB
+                </th>
+                <th scope="col" className=" px-6 py-4">
+                  Name
+                </th>
+                <th scope="col" className=" px-6 py-4">
+                  Your Salesperson
+                </th>
+                <th scope="col" className=" px-6 py-4">
+                  Total Purchased
+                </th>
+                <th scope="col" className=" px-6 py-4">
+                  Status
+                </th>
+                <th scope="col" className=" px-6 py-4">
+                  VIP
+                </th>
+              </tr>
+            </thead>
+            <tbody className=" dark:border-light dark:bg-base-light/60">
+              {Array.isArray(clients) &&
+                clients?.map((item) => (
+                  <ClientsItems
+                    item={item}
+                    key={item.id}
+                    onCheckbox={handleCheckboxChange}
+                    onSelected={selectedCheckbox}
+                  />
+                ))}
+            </tbody>
+          </table>
+        </div>
       </section>
     );
   } else if (clientsStatus === "failed") {
@@ -120,4 +120,5 @@ const ClientsList = () => {
     return <div>{clientsError} </div>;
   }
 };
+
 export default ClientsList;

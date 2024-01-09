@@ -17,7 +17,7 @@ const Sellers = () => {
       <main className="lg:pl-72 h-[100vh] overflow-y-auto flex flex-col z-[2] w-[100vw] lg:w-auto">
         <section className="py-6 px-12 z-20 flex flex-col ">
           <Header
-            mainText={"VENDEDORES"}
+            mainText={"SELLERS"}
             data={sellers}
             onSearch={(filteredSellers) =>
               dispatch(searchSellers(filteredSellers))

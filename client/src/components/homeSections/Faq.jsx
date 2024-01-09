@@ -3,27 +3,27 @@ import Faq from "../shared/Faq";
 
 const faqs = [
   {
-    question: "¿Qué es el software de CRM?",
+    question: "What is CRM software?",
     answer:
-      "El CRM es un software de gestión de la relación con los clientes (o Customer Relationship Management). Es una poderosa herramienta que ayuda a las empresas a organizar y gestionar la relación con sus clientes desde una plataforma centralizada y fácil de usar. Al hacer seguimiento de vendedores y crear una base de datos completa con la actividad de sus clientes, las empresas pueden entender dónde se encuentran en el proceso de compra de cada cliente.",
+      "CRM stands for Customer Relationship Management software. It is a powerful tool that helps businesses organize and manage their relationship with customers from a centralized and user-friendly platform. By tracking salespeople and creating a comprehensive database with customer activity, companies can understand where each customer stands in the purchasing process.",
     dropKey: "first_faq",
   },
   {
-    question: "¿Cuánto cuesta el sistema CRM?",
+    question: "How much does the CRM system cost?",
     answer:
-      "Puedes usar el CRM sin costo por 7 días sin limitación en las funcionalidades.  Sin límite de usuarios o de datos de clientes. \nTermindado el período de prueba puedes acceder al servicio, por $99 USD mensuales",
+      "You can use the CRM for free for 7 days with no limitations on functionalities, users, or customer data. After the trial period, you can access the service for $99 USD per month.",
     dropKey: "second_faq",
   },
   {
-    question: "¿El sistema CRM es adecuado para mi empresa?",
+    question: "Is the CRM system suitable for my company?",
     answer:
-      "Ya sea que tengas una pyme o una gran empresa, la plataforma CRM responde a tus necesidades. No importa el tamaño de tu empresa cumplimos con funcionalidades para automatización de marketing y dinamico flujo de trabajo.",
+      "Whether you have a small or large business, the CRM platform meets your needs. Regardless of your company's size, we provide features for marketing automation and dynamic workflow.",
     dropKey: "third_faq",
   },
   {
-    question: "¿El sistema CRM es accesible para todos los dispositivos moviles?",
+    question: "Is the CRM system accessible on all mobile devices?",
     answer:
-      "¡Sí! Nuestro sistema CRM está en todos los dispositivos web del mercado para que puedas aprovechar esta herramienta al máximo. Esta es una ventaja especial cuando se compara con otros ejemplos de software CRM.",
+      "Yes! Our CRM system is available on all web devices in the market, allowing you to make the most of this tool. This is a special advantage when compared to other examples of CRM software.",
     dropKey: "four_faq",
   },
 ];
@@ -49,10 +49,13 @@ const FAQ = () => {
   };
 
   return (
-    <section name="faq" className=" flex-col gap-y-4  items-center flex ">
+    <section
+      name="faq"
+      className="h-screen flex-col gap-y-4 justify-center items-center flex "
+    >
       <main className=" pt-16 flex flex-col gap-y-6">
         <h3 className="text-4xl  text-center font-extrabold text-white">
-          Preguntas frecuentes
+          Frequently Asked Questions
         </h3>
         {faqs.map((f) => (
           <Faq

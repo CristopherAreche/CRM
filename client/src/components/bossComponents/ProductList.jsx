@@ -45,7 +45,7 @@ const ProductList = () => {
     );
   } else if (productStatus === "succeeded") {
     return (
-      <div className="overflow-x-auto lg:min-w-full my-4 lg:h-96 overflow-y-auto pb-4"  >
+      <div className="overflow-x-auto lg:min-w-full my-4 lg:h-96 overflow-y-auto pb-4">
         <table className="min-w-full text-center text-sm font-regular shadow-md rounded-sm">
           <thead className=" font-medium text-light/75  dark:bg-base-light/30 rounded-md">
             <tr>
@@ -53,28 +53,28 @@ const ProductList = () => {
                 CB
               </th>
               <th scope="col" className=" px-6 py-4">
-                Nombre
+                Name
               </th>
               <th scope="col" className=" px-6 py-4">
-                Cantidad
+                Quantity
               </th>
               <th scope="col" className=" px-6 py-4">
-                Estado
+                State
               </th>
               <th scope="col" className=" px-6 py-4">
-                Precio costo
+                Original Price
               </th>
               <th scope="col" className=" px-6 py-4">
-                Precio venta
+                Sale&apos;s Price
               </th>
               <th scope="col" className=" px-6 py-4">
-                Descuento
+                Discount
               </th>
               <th scope="col" className=" px-6 py-4">
-                Categoria
+                Category
               </th>
               <th scope="col" className=" px-6 py-4">
-                Imagen
+                Image
               </th>
             </tr>
           </thead>
@@ -106,12 +106,12 @@ const ProductList = () => {
                     }`}
                   >
                     {" "}
-                    {item.enable ? "Habilitado" : "Desabilitado"}
+                    {item.enable ? "Enabled" : "Disable"}
                   </td>
                   <td>${item.cost_price}</td>
                   <td>${item.sale_price}</td>
                   <td>%{item.discount}</td>
-                  <td>{item.category}</td>
+                  <td>{item?.category}</td>
                   <td className="px-6 py-4 flex justify-center">
                     <img
                       className="h-12 w-12 object-cover rounded-md"

@@ -1586,7 +1586,7 @@ module.exports = {
       },
     ],
   ],
-  Mascotas: [
+  Pets: [
     [
       {
         method: "Correo-E",

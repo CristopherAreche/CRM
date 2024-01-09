@@ -41,7 +41,7 @@ const BottomProduct = () => {
       >
         <RiAddFill className="text-2xl" />
         <span className="absolute hidden group-hover:flex -left-3 -top-2 -translate-y-full w-auto px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
-          Agregar
+          Add
         </span>
       </button>
       <button
@@ -50,7 +50,7 @@ const BottomProduct = () => {
       >
         <RiEdit2Line className="text-2xl" />
         <span className="absolute hidden group-hover:flex -left-1 -top-2 -translate-y-full w-auto px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
-          Editar
+          Edit
         </span>
       </button>
       <button
@@ -59,7 +59,7 @@ const BottomProduct = () => {
       >
         <RiCloseCircleLine className="text-2xl" />
         <span className="absolute hidden group-hover:flex -left-5 -top-2 -translate-y-full w-auto px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
-          Deshabilitar
+          Disable
         </span>
       </button>
       <button
@@ -68,16 +68,9 @@ const BottomProduct = () => {
       >
         <RiCheckboxCircleLine className="text-2xl" />
         <span className="absolute hidden group-hover:flex -left-3 -top-2 -translate-y-full w-auto px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
-          Habilitar
+          Enable
         </span>
       </button>
-
-      {/* <button
-        className="rounded-xl py-2 px-3 shadow-gray-500/20 hover:scale-[1.03] hover:bg-gray-500/60 transition-all shadow-md bg-gray-500 "
-        onClick={onDelete}
-      >
-        <RiDeleteBin5Line className="text-2xl" />
-      </button> */}
       <FormProduct isVisible={showModal} onClose={() => setShowModal(false)} />
     </section>
   );

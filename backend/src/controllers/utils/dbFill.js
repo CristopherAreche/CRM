@@ -23,7 +23,7 @@ module.exports = async ({
     const salesmanArr = salesmans[i];
     const productArr = products[i];
     const activitiesArr = Object.values(activities)[i];
-    console.log("**BOSSES", [i + 1], "/", [bosses.length]);
+    // console.log("**BOSSES", [i + 1], "/", [bosses.length]);
     for (let w = 0; w < productArr.length; w++) {
       const newProduct = await Product.findOrCreate({
         where: { ...productArr[w], bossId: newBoss[0].dataValues.id },
@@ -38,14 +38,14 @@ module.exports = async ({
         },
       });
       const clientArr = clients[j];
-      console.log("****SALESMAN", [j + 1], "/", [salesmanArr.length]);
+      // console.log("****SALESMAN", [j + 1], "/", [salesmanArr.length]);
       for (let y = 0; y < clientArr.length; y++) {
         const newClient = await Client.findOrCreate({
           where: { ...clientArr[y], salesmanId: newSalesman[0].dataValues.id },
         });
-        console.log("******CLIENT", [y + 1], "/", [clientArr.length]);
+        // console.log("******CLIENT", [y + 1], "/", [clientArr.length]);
         const actividades = activitiesArr[y];
-        console.log("********ACTIVITY", [y + 1], "/", [activitiesArr.length]);
+        // console.log("********ACTIVITY", [y + 1], "/", [activitiesArr.length]);
         for (let b = 0; b < actividades.length; b++) {
           const newActivity = await Activity.findOrCreate({
             where: {
@@ -57,7 +57,7 @@ module.exports = async ({
             },
           });
           if (newActivity[0].dataValues.state == "Concretado") {
-            console.log("******************************", "concretado");
+            // console.log("******************************", "concretado");
             const productbySale = await Product.findAll({
               where: { bossId: newBoss[0].dataValues.id },
             });

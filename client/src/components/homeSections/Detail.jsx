@@ -5,15 +5,15 @@ import diff3 from "../../assets/differential3.png";
 const Detail = () => {
   return (
     <section
-      name="detalles"
+      name="details"
       className="h-screen justify-center items-center flex flex-col gap-y-8 relative z-40 w-full"
     >
       <h3 className="text-4xl text-start lg:text-6xl  lg:text-center font-extrabold text-white">
-        ¿Que te ofrece{" "}
+        What does{" "}
         <span className="bg-gradient-to-r from-primary  to-secondary text-transparent bg-clip-text">
-          nuestra CRM
-        </span>
-        ?
+          our CRM
+        </span>{" "}
+        offer you?
       </h3>
       <section className="w-full flex flex-col lg:flex-row  justify-center items-center gap-y-4 lg:gap-x-24">
         <article>
@@ -22,11 +22,9 @@ const Detail = () => {
             className="lg:w-72 lg:h-72 w-20 h-20"
             alt="task 3d"
           />
-          <h3 className="text-xl font-medium text-light">
-            Gestión de vendedores
-          </h3>
+          <h3 className="text-xl font-medium text-light">Seller Management</h3>
           <p className="text-light/80 w-full lg:w-64">
-            Registra vendedores y observa estadisticas mensuales sus ventas.
+            Register sellers and observe monthly statistics of their sales.
           </p>
         </article>
         <article>
@@ -36,10 +34,10 @@ const Detail = () => {
             alt="task 3d"
           />
           <h3 className="text-xl font-medium text-light">
-            Gestión de inventario
+            Inventory Management
           </h3>
           <p className="text-light/80 w-full lg:w-64">
-            Agrega, edita y controla el stock de tu negocio.
+            Add, edit, and control your business stock.
           </p>
         </article>
         <article>
@@ -49,10 +47,10 @@ const Detail = () => {
             alt="task 3d"
           />
           <h3 className="text-xl font-medium text-light">
-            Gestión de clientes
+            Customer Management
           </h3>
           <p className="text-light/80 w-full lg:w-64">
-            Lleva un registro de clientes y sus compras.
+            Keep track of customers and their purchases.
           </p>
         </article>
       </section>

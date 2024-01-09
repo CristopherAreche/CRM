@@ -73,7 +73,7 @@ Task.belongsTo(Client);
 Task.belongsTo(Salesman);
 
 dbFill(sequelize.models).then(() => {
-  console.log("Se ha ejecutado llenar en la linea 91 de db.js");
+  // console.log("Se ha ejecutado llenar en la linea 91 de db.js");
 });
 
 module.exports = {

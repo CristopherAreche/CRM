@@ -3,18 +3,18 @@ import { Chart } from "chart.js/auto";
 
 const MonthlyCompareChart = ({ annual_sales }) => {
   const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const mesActual = new Date().getMonth();
@@ -36,7 +36,7 @@ const MonthlyCompareChart = ({ annual_sales }) => {
       type: "bar",
       id: 1,
       data: {
-        labels: ["Mes anterior", "Mes actual"],
+        labels: ["Previous Month", "Actual Month"],
         datasets: [
           {
             label: "Ventas",
@@ -57,7 +57,6 @@ const MonthlyCompareChart = ({ annual_sales }) => {
           },
         },
         scales: {
-          
           // yAxes: [
           //   {
           //     ticks: {
@@ -73,7 +72,7 @@ const MonthlyCompareChart = ({ annual_sales }) => {
     return () => {
       newChart.destroy();
     }; // actualizamos el estado del objeto Chart
-  }, [annual_sales]);
+  }, [annual_sales, valorMesActual, valorMesAnterior]);
 
   return (
     <div className="">

@@ -41,7 +41,7 @@ const BossFilterBottom = () => {
       >
         <RiAddFill className="text-2xl" />
         <span className="absolute hidden group-hover:flex -left-3 -top-2 -translate-y-full w-auto px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
-          Agregar
+          Add
         </span>
       </button>
       <button
@@ -50,7 +50,7 @@ const BossFilterBottom = () => {
       >
         <RiEdit2Line className="text-2xl" />
         <span className="absolute hidden group-hover:flex -left-1 -top-2 -translate-y-full w-auto px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
-          Editar
+          Edit
         </span>
       </button>
       <button
@@ -59,7 +59,7 @@ const BossFilterBottom = () => {
       >
         <RiUserUnfollowLine className="text-2xl" />
         <span className="absolute hidden group-hover:flex -left-6 -top-2 -translate-y-full w-auto px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
-          Deshabilitar
+          Disable
         </span>
       </button>
       <button
@@ -68,7 +68,7 @@ const BossFilterBottom = () => {
       >
         <RiUserFollowLine className="text-2xl" />
         <span className="absolute hidden group-hover:flex -left-3 -top-2 -translate-y-full w-auto px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
-          Habilitar
+          Enable
         </span>
       </button>
       <FormSeller isVisible={showModal} onClose={() => setShowModal(false)} />

@@ -11,7 +11,7 @@ const MainSellerClients = () => {
   return (
     <section className="py-6 px-12 z-20 flex-col">
       <Header
-        mainText={"CLIENTES"}
+        mainText={"CLIENTS"}
         data={clients}
         onSearch={(filteredClients) => dispatch(searchClients(filteredClients))}
         onReset={() => dispatch(resetClients())}

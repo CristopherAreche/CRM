@@ -13,7 +13,7 @@ function JefeVendedores() {
   return (
     <section className="py-6 px-12 z-[2] ">
       <Header
-        mainText={"VENDEDORES"}
+        mainText={"SELLERS"}
         data={sellers}
         onSearch={(filteredSellers) => dispatch(searchSellers(filteredSellers))}
         onReset={() => dispatch(resetSellers())}

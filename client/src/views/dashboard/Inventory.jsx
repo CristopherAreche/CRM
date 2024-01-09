@@ -40,11 +40,10 @@ const Inventory = () => {
     <main className=" h-screen  text-white ">
       {role !== "admin" ? (
         <div className="  flex flex-row  gap-y-2 ">
-          {/* Inventory --- aqui va el inventario desde la vista del Vendedor. */}
           <section className="flex flex-col gap-y-2 w-full">
             <h4 className="text-2xl text-light font-medium flex  mb-2 p-2">
               <MdOutlineInventory2 className="text-4xl" />
-              Inventario
+              Inventory
             </h4>
             <div className="flex gap-x-8 mt-2 ">
               <SearchBar
@@ -68,7 +67,7 @@ const Inventory = () => {
             <section className="py-6 px-12 z-20  ">
               <div className=" text-white w-full flex flex-col lg:flex-row items-center  lg:justify-between gap-y-2 mb-6">
                 <Header
-                  mainText={"INVENTARIO"}
+                  mainText={"INVENTORY"}
                   data={products}
                   onSearch={(filteredProducts) =>
                     dispatch(searchProducts(filteredProducts))
@@ -87,11 +86,8 @@ const Inventory = () => {
               </section>
             </section>
           </section>
-          <LightsSvg />
         </main>
       )}
-
-
     </main>
   );
 };

@@ -68,14 +68,14 @@ const Register = () => {
     e.preventDefault();
 
     if (password.password === "" || password.password2 === "" || email === "") {
-      swal("Error", "Por favor, complete todos los campos.", "error");
+      swal("Error", "Please fill in all the fields.", "error");
     }
     if (password.password.toString() !== password.password2.toString())
       swal({
         title: "Error",
-        text: "Las contraseñas no coinciden. Por favor, inténtelo de nuevo.",
+        text: "Passwords do not match. Please try again.",
         icon: "error",
-        button: "Aceptar",
+        button: "Accept",
       });
     else await register();
   };
@@ -88,7 +88,7 @@ const Register = () => {
           className="flex gap-x-1 items-center font-medium group hover:text-white/90 transition-colors"
         >
           <RiArrowLeftLine className="text-2xl group-hover:-translate-x-1 transition-transform" />
-          Volver atras
+          Go Back
         </Link>
       </header>
       <div className="text-3xl flex justify-center items-center gap-x-2 font-bold tracking-widest ">
@@ -97,7 +97,7 @@ const Register = () => {
           CRM
         </p>
       </div>
-      <p className="text-gray-400 ">No olvide sus datos ingresados</p>
+      <p className="text-gray-400 ">Do not forget your entered info.</p>
       <form
         onSubmit={(e) => {
           handleSubmit(e);
@@ -116,7 +116,7 @@ const Register = () => {
           <RiMailLine className="absolute top-1/2 translate-y-1 left-2 text-2xl text-secondary " />
         </div>
         <div className="relative flex flex-col gap-y-1">
-          <label className="font-medium text-gray-300">Contraseña</label>
+          <label className="font-medium text-gray-300">Password</label>
           <input
             onChange={(e) => valPassword(e)}
             name="password"
@@ -128,9 +128,7 @@ const Register = () => {
           <RiLock2Line className="absolute top-1/2 translate-y-1 left-2 text-2xl text-secondary " />
         </div>
         <div className="relative flex flex-col gap-y-1">
-          <label className="font-medium text-gray-300">
-            Repita su contraseña
-          </label>
+          <label className="font-medium text-gray-300">Re-enter Password</label>
           <input
             onChange={(e) => valPassword(e)}
             name="password2"
@@ -146,7 +144,7 @@ const Register = () => {
             to="/authentication"
             className="bg-gradient-to-r from-primary  to-secondary text-transparent bg-clip-text hover:underline hover:text-light transition-all cursor-pointer"
           >
-            Ya tienes una cuenta? Ingresa
+            Already have an account? Log In Now
           </Link>
         </div>
         <button
@@ -154,27 +152,9 @@ const Register = () => {
           type="submit"
           className="text-center bg-gradient-to-r from-primary to-secondary py-2 px-4 rounded-md font-bold text-lg hover:scale-[1.02] transition-all"
         >
-          Registrate
+          Register
         </button>
       </form>
-      <section className="flex gap-x-2 items-center justify-center w-full bg-white py-2 hover:scale-[1.03] transition-all cursor-pointer rounded-md">
-        <img
-          src="https://img.freepik.com/iconos-gratis/buscar_318-265146.jpg"
-          alt="logo google"
-          className="w-8 h-8 mr-4"
-        />
-        <button
-          className="text-base font-medium "
-          onClick={() => loginWithRedirect({ screen_hint: "signup" })}
-        >
-          Inicia sesión con Google o Microsoft
-        </button>
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/732/732221.png?w=740&t=st=1680637866~exp=1680638466~hmac=6099a6118528d9a0e0b89bc5f7d0c78b31b9f71b84a7c81bc034269616924215"
-          alt="logo microsoft"
-          className="w-8 h-8 ml-4"
-        />
-      </section>
     </section>
   );
 };

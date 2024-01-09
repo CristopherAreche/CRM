@@ -14,8 +14,8 @@ const FilterTop = () => {
   const handleOrderChange = (e) => {
     const value = e.target.value;
     let order = "";
-    if (value === "todos") {
-      order = "todos";
+    if (value === "all") {
+      order = "all";
     } else if (value === "asc") order = "asc";
     else order = "desc";
     dispatch(sortClients({ order }));
@@ -24,8 +24,8 @@ const FilterTop = () => {
   const handleVipOrderChange = (e) => {
     const value = e.target.value;
     let order = "";
-    if (value === "todos") {
-      order = "todos";
+    if (value === "all") {
+      order = "all";
     } else if (value === "asc") {
       order = "asc";
     } else if (value === "desc") {
@@ -37,8 +37,8 @@ const FilterTop = () => {
   const handleEnableOrderChange = (e) => {
     const value = e.target.value;
     let orderEn = "";
-    if (value === "todos") {
-      orderEn = "todos";
+    if (value === "all") {
+      orderEn = "all";
     } else if (value === "asc") {
       orderEn = "asc";
     } else if (value === "desc") {
@@ -50,8 +50,8 @@ const FilterTop = () => {
   const handlePurchasesOrderChange = (e) => {
     const value = e.target.value;
     let orderP = "";
-    if (value === "todos") {
-      orderP = "todos";
+    if (value === "all") {
+      orderP = "all";
     } else if (value === "asc") {
       orderP = "asc";
     } else if (value === "desc") {
@@ -65,65 +65,67 @@ const FilterTop = () => {
   };
 
   return (
-    <section className="text-white text-bold flex justify-evenly w-full  items-center py-2 border-b-2 border-light/10 gap-4 flex-row flex-wrap lg:flex-nowrap  ">
+    <section className="text-white font-bold flex justify-evenly w-full items-center py-2 border-b-2 border-light/10 gap-4 flex-row flex-wrap lg:flex-nowrap">
       <div className="flex gap-x-2 items-center">
-      <button
+        <button
           className="bg-slate-600 rounded-full p-2 group relative mr-12"
           onClick={handleClearFilters}
         >
           <RiArrowGoForwardFill />
-          <span className="absolute hidden group-hover:flex -left-3 -top-2 -translate-y-full w-auto px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
-          Reiniciar Filtros
-        </span>
+          <span className="absolute hidden group-hover:flex -left-3 -top-2 -translate-y-full w-auto px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent">
+            Reset Filters
+          </span>
         </button>
-        <p className="text-gray-300 text-sm font-medium">Alfabéticamente:</p>
+        <p className="text-gray-300 text-sm font-medium uppercase">
+          Alphabetically:
+        </p>
         <select
           name=""
           id=""
-          className="bg-slate-700 rounded-lg "
+          className="bg-slate-700 rounded-lg"
           onChange={handleOrderChange}
         >
-          <option value="todos">Todos</option>
+          <option value="all">All</option>
           <option value="asc">A-Z</option>
           <option value="desc">Z-A</option>
         </select>
       </div>
       <div className="flex gap-x-2 items-center">
-        <p className="text-gray-300 text-sm font-medium">Total:</p>
+        <p className="text-gray-300 text-sm font-medium uppercase">Total:</p>
         <select
           name=""
           id=""
-          className="bg-slate-700 rounded-lg "
+          className="bg-slate-700 rounded-lg"
           onChange={handlePurchasesOrderChange}
         >
-          <option value="todos">Todos</option>
+          <option value="all">All</option>
           <option value="desc">Max</option>
           <option value="asc">Min</option>
         </select>
       </div>
       <div className="flex gap-x-2 items-center">
-        <p className="text-gray-300 text-sm font-medium">Estado:</p>
+        <p className="text-gray-300 text-sm font-medium uppercase">Status:</p>
         <select
           name=""
           id=""
-          className="bg-slate-700 rounded-lg "
+          className="bg-slate-700 rounded-lg"
           onChange={handleEnableOrderChange}
         >
-          <option value="todos">Todos</option>
-          <option value="desc">Habilitados</option>
-          <option value="asc">Deshabilitados</option>
+          <option value="all">All</option>
+          <option value="desc">Enabled</option>
+          <option value="asc">Disabled</option>
         </select>
       </div>
       <div className="flex gap-x-2 items-center">
-        <p className="text-gray-300 text-sm font-medium">VIP:</p>
+        <p className="text-gray-300 text-sm font-medium uppercase">VIP:</p>
         <select
           name=""
           id=""
-          className="bg-slate-700 rounded-lg "
+          className="bg-slate-700 rounded-lg"
           onChange={handleVipOrderChange}
         >
-          <option value="todos">Todos</option>
-          <option value="desc">Si</option>
+          <option value="all">All</option>
+          <option value="desc">Yes</option>
           <option value="asc">No</option>
         </select>
       </div>

@@ -2,17 +2,14 @@ import React from "react";
 import { RiVipCrown2Line } from "react-icons/ri";
 import { toggleVipClient } from "../../services/clientsServices";
 import { useDispatch, useSelector } from "react-redux";
-import swal from "sweetalert";
 
 const BottomsActions = () => {
   const clientSelected = useSelector((state) => state.clients.clientSelected);
   const dispatch = useDispatch();
   const onPromoteVip = () => {
-   
     dispatch(toggleVipClient({ clientSelected, vip: true }));
   };
   const OnUnsubscribeVip = () => {
-   
     dispatch(toggleVipClient({ clientSelected, vip: false }));
   };
 
@@ -24,7 +21,7 @@ const BottomsActions = () => {
       >
         <RiVipCrown2Line className="text-2xl" />
         <span className="absolute hidden group-hover:flex -left-3 -top-2 -translate-y-full w-auto px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
-          Agregar VIP
+          Add to VIP
         </span>
       </button>
       <button
@@ -33,7 +30,7 @@ const BottomsActions = () => {
       >
         <RiVipCrown2Line className="text-2xl" />
         <span className="absolute hidden group-hover:flex -left-3 -top-2 -translate-y-full w-auto px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
-          Remover VIP
+          Remove from VIP
         </span>
       </button>
     </section>

@@ -1,4 +1,4 @@
-import {RiTrophyLine} from "react-icons/ri";
+import { RiTrophyLine } from "react-icons/ri";
 
 const BestSeller = ({ best_salesman }) => {
   const bs = best_salesman?.image;
@@ -16,20 +16,24 @@ const BestSeller = ({ best_salesman }) => {
   return (
     <div className="flex flex-col bg-base-light/30 px-2 rounded-md py-4 w-full items-center gap-y-2 shadow-box">
       <h2 className="text-light font-bold text-xl text-center">
-        MEJOR VENDEDOR DEL MES
+        BEST SELLER OF THE MONTH
       </h2>
       <div className="relative">
-          <img
-            src={
+        <img
+          src={
             !bs ? `https://cdn-icons-png.flaticon.com/512/219/219983.png` : bs
-                }
-            alt="placeholder"
-            className="w-28 h-28 rounded-full object-cover "
-          />
-          <RiTrophyLine className="text-2xl bg-yellow-500 absolute bottom-0 right-0 text-white p-1 box-content rounded-full"/>
+          }
+          alt="placeholder"
+          className="w-28 h-28 rounded-full object-cover "
+        />
+        <RiTrophyLine className="text-2xl bg-yellow-500 absolute bottom-0 right-0 text-white p-1 box-content rounded-full" />
       </div>
-      <h5 className="font-medium text-light text-lg">{best_salesman?.name || 'Anonymous'} </h5>
-      <p className="text-sm font-bold text-light/80">Total de ventas: ${best_salesman?.total_monthly_sales || '0'}</p>
+      <h5 className="font-medium text-light text-lg">
+        {best_salesman?.name || "Anonymous"}{" "}
+      </h5>
+      <p className="text-sm font-bold text-light/80">
+        Total Sales: ${best_salesman?.total_monthly_sales || "0"}
+      </p>
     </div>
   );
 };

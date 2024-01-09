@@ -9,7 +9,7 @@ const MayorStockChart = ({ products = [] }) => {
     labels: HighStockProducts.map((p) => p.name),
     datasets: [
       {
-        label: "Top 10 productos con mayor stock",
+        label: "Top 10 products with highest stock",
         data: HighStockProducts.map((p) => p.quantity),
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgba(255, 99, 132, 1)",
@@ -21,18 +21,18 @@ const MayorStockChart = ({ products = [] }) => {
   // Configuración de opciones para el gráfico de barras
   const options = {
     scales: {
-      // yAxes: [
-      //   {
-      //     ticks: {
-      //       beginAtZero: true,
-      //     },
-      //   },
-      // ],
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
     },
   };
 
   return (
-    <div className="w-auto lg:w-[30rem] py-12">
+    <div className="w-full h-[25em] pt-12">
       <Bar data={data} options={options} />
     </div>
   );

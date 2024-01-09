@@ -25,7 +25,7 @@ module.exports = {
     },
   },
 
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")({ nocompatible: true })],
 };
 
 module.exports.colors = module.exports.theme.extend.colors;

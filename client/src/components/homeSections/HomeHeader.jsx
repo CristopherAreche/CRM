@@ -57,13 +57,13 @@ const HomeHeader = () => {
             } font-medium text-light/80 hover:text-white transition-colors cursor-pointer`}
           >
             <LinkRoll
-              to="detalles"
+              to="details"
               smooth={true}
               duration={500}
               spy={true}
               onSetActive={handleSetActive}
             >
-              Detalles
+              Details
             </LinkRoll>
           </li>
           <li
@@ -73,28 +73,13 @@ const HomeHeader = () => {
             } font-medium text-light/80 hover:text-white transition-colors cursor-pointer`}
           >
             <LinkRoll
-              to="funcionalidades"
+              to="features"
               smooth={true}
               duration={500}
               spy={true}
               onSetActive={handleSetActive}
             >
-              Funcionalidades
-            </LinkRoll>
-          </li>
-          <li
-            className={`${
-              activeSection === "precios" && "text-white border-b border-white"
-            } font-medium text-light/80 hover:text-white transition-colors cursor-pointer`}
-          >
-            <LinkRoll
-              to="precios"
-              smooth={true}
-              duration={500}
-              spy={true}
-              onSetActive={handleSetActive}
-            >
-              Precios
+              Functionalities
             </LinkRoll>
           </li>
 
@@ -113,35 +98,19 @@ const HomeHeader = () => {
               FAQ
             </LinkRoll>
           </li>
-          <li
-            className={`${
-              activeSection === "creadores" &&
-              "text-white border-b border-white"
-            } font-medium text-light/80 hover:text-white transition-colors cursor-pointer`}
-          >
-            <LinkRoll
-              to="creadores"
-              smooth={true}
-              duration={500}
-              spy={true}
-              onSetActive={handleSetActive}
-            >
-              Creadores
-            </LinkRoll>
-          </li>
         </ul>
         <section className="hidden lg:flex gap-x-8 items-center">
           <Link
             to="/authentication/register"
             className="bg-gradient-to-r from-primary to-secondary px-2 py-1 rounded-md text-white font-medium text-lg hover:scale-[1.03] transition-all"
           >
-            Empezar Ahora
+            Start Now
           </Link>
           <Link
             to="/authentication"
             className=" flex gap-x-1 items-center text-white font-medium hover:text-light transition-colors "
           >
-            <RiUserLine className="text-2xl" /> Iniciar Sesión
+            <RiUserLine className="text-2xl" /> Login
           </Link>
         </section>
       </header>

@@ -96,7 +96,7 @@ function SideBar({ typeSidebar, summary, inventory, clients, sellers }) {
                 onClick={() => handleLinkClick("summary")}
               >
                 <MdOutlineSpaceDashboard className="text-3xl text-secondary" />{" "}
-                Resumen
+                Dashboard
               </Link>
               {user.role === "admin" && (
                 <>
@@ -107,7 +107,7 @@ function SideBar({ typeSidebar, summary, inventory, clients, sellers }) {
                     onClick={() => handleLinkClick("inventory")}
                   >
                     <MdOutlineInventory2 className="text-3xl text-secondary" />
-                    Inventario
+                    Inventory
                   </Link>
                   <Link
                     to="/dashboard/sellers"
@@ -116,8 +116,7 @@ function SideBar({ typeSidebar, summary, inventory, clients, sellers }) {
                     }`}
                     onClick={() => handleLinkClick("seller")}
                   >
-                    <RiTeamLine className="text-3xl text-secondary" />{" "}
-                    Vendedores
+                    <RiTeamLine className="text-3xl text-secondary" /> Sellers
                   </Link>
                 </>
               )}
@@ -127,33 +126,27 @@ function SideBar({ typeSidebar, summary, inventory, clients, sellers }) {
               ${selected === "clients" && "bg-base"}`}
                 onClick={() => handleLinkClick("clients")}
               >
-                <RiHandCoinLine className="text-3xl text-secondary" /> Clientes
+                <RiHandCoinLine className="text-3xl text-secondary" /> Clients
               </Link>
             </div>
           )}
           <div>
-            {/* <button
-              className="flex px-12 py-2  active:scale-95 active:bg-light/20 gap-x-6 items-center text-lg text-gray-300 font-medium   cursor-pointer  hover:text-gray-100 transition-all"
-              onClick={() => handleBossRegister()}
-            >
-              Enviar info
-            </button> */}
             <Link
               to="/dashboard/perfil"
               className={`flex px-12 py-2  active:scale-95 active:bg-light/20 gap-x-6 items-center text-lg text-gray-300 font-medium   cursor-pointer  hover:text-gray-100 transition-all
               ${selected === "settings" && "bg-base"}`}
               onClick={() => handleLinkClick("settings")}
             >
-              <RiUserSettingsLine className="text-2xl text-secondary" />
-              Configuración
+              <RiUserSettingsLine className="text-2xl text-gray-500" />
+              Settings
             </Link>
 
             <button
               onClick={() => handleLogout()}
               className="flex px-12 py-2  active:scale-95 active:bg-light/20 gap-x-6 items-center text-lg text-gray-300 font-medium   cursor-pointer  hover:text-gray-100 transition-all"
             >
-              <RiLogoutCircleRLine className="text-2xl text-secondary" /> Cerrar
-              Sesión
+              <RiLogoutCircleRLine className="text-2xl text-red-500" />
+              Logout
             </button>
           </div>
           {typeSidebar === "client-detail" && (
