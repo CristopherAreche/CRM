@@ -1,20 +1,22 @@
-const { Activity } = require("../../db.js");
+const prisma = require("../../prisma.js");
 const getActivities = require("./getActivities.js");
 const getAllSalesman = require("../salesman/getAllSalesman.js");
 const getClientById = require("../clients/getClientById.js");
 const { sendMail } = require("../email/notifyActivityClient.js");
+const { mapMethod, mapState } = require("../utils/enumMaps.js");
 
 module.exports = async (data) => {
   //data={id,method,state,from,to,message,subject,attached,saleman_id,***sale_id}
   const dataAct = { ...data };
-  let state = await Activity.findOne({ where: { id: data.id } });
-  let statePrev = state.dataValues.state;
+  let state = await prisma.activity.findUnique({ where: { id: data.id } });
+  let statePrev = state.state;
   const id = dataAct.id;
   delete dataAct.id;
-  const [resultado] = await Activity.update(dataAct, {
-    where: {
-      id,
-    },
+  if (dataAct.method) dataAct.method = mapMethod(dataAct.method);
+  if (dataAct.state) dataAct.state = mapState(dataAct.state);
+  const resultado = await prisma.activity.update({
+    where: { id },
+    data: dataAct,
   });
 
   if (resultado) {
@@ -25,7 +27,7 @@ module.exports = async (data) => {
     const cliente = await getClientById(activity.clientId);
 
     //Solo cuando se modifica el estado de negociacion
-    let infoActivity = { ...activity.dataValues, statePrev };
+    let infoActivity = { ...activity, statePrev };
     if (statePrev !== infoActivity.state) {
       sendMail(vendedor, cliente, infoActivity, "cambio");
     }

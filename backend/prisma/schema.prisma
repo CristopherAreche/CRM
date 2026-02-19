@@ -1,0 +1,161 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ActivityMethod {
+  CorreoE     @map("Correo-E")
+  Llamada
+  Email       @map("E-mail")
+  Call
+}
+
+enum ActivityState {
+  Pendiente
+  Concretado
+  Earring
+  Concretized
+}
+
+model Boss {
+  id                  String     @id @default(uuid())
+  name                String
+  username            String
+  company             String?
+  company_description String?
+  commercial_register String?
+  address             String?
+  email               String     @unique
+  password            String
+  phone               String?
+  pay_day             DateTime?
+  logo                String?
+  enable              Boolean    @default(false)
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  products            Product[]
+  salesmen            Salesman[]
+
+  @@map("bosses")
+}
+
+model Salesman {
+  id         String     @id @default(uuid())
+  name       String?
+  address    String?
+  email      String     @unique
+  password   String
+  phone      String
+  enable     Boolean    @default(true)
+  image      String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  bossId     String?
+  boss       Boss?      @relation(fields: [bossId], references: [id])
+  clients    Client[]
+  feedbacks  Feedback[]
+  activities Activity[]
+  tasks      Task[]
+
+  @@map("salesmen")
+}
+
+model Client {
+  id         String     @id @default(uuid())
+  name       String?
+  email      String
+  phone      String
+  vip        Boolean    @default(false)
+  enable     Boolean    @default(true)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  salesmanId String?
+  salesman   Salesman?  @relation(fields: [salesmanId], references: [id])
+  activities Activity[]
+  tasks      Task[]
+
+  @@map("clients")
+}
+
+model Product {
+  id           String        @id @default(uuid())
+  name         String
+  quantity     Int           @default(0)
+  enable       Boolean       @default(true)
+  cost_price   Decimal
+  sale_price   Decimal
+  discount     Decimal?
+  category     String?
+  image        String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  bossId       String?
+  boss         Boss?         @relation(fields: [bossId], references: [id])
+  saleProducts SaleProduct[]
+
+  @@map("products")
+}
+
+model Activity {
+  id           String         @id @default(uuid())
+  method       ActivityMethod
+  state        ActivityState
+  from         String?
+  to           String?
+  message      String
+  subject      String?
+  attached     String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  clientId     String?
+  client       Client?        @relation(fields: [clientId], references: [id])
+  salesmanId   String?
+  salesman     Salesman?      @relation(fields: [salesmanId], references: [id])
+  saleProducts SaleProduct[]
+
+  @@map("activities")
+}
+
+model SaleProduct {
+  id            String    @id @default(uuid())
+  quantity_sale Int
+  price_sale    Decimal
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  activityId    String?
+  activity      Activity? @relation(fields: [activityId], references: [id])
+  productId     String?
+  product       Product?  @relation(fields: [productId], references: [id])
+
+  @@map("sale_products")
+}
+
+model Feedback {
+  id         String    @id @default(uuid())
+  score      Int?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  salesmanId String?
+  salesman   Salesman? @relation(fields: [salesmanId], references: [id])
+
+  @@map("feedbacks")
+}
+
+model Task {
+  id          String    @id @default(uuid())
+  state       String?
+  description String?
+  due_date    DateTime?
+  attached    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  clientId    String?
+  client      Client?   @relation(fields: [clientId], references: [id])
+  salesmanId  String?
+  salesman    Salesman? @relation(fields: [salesmanId], references: [id])
+
+  @@map("tasks")
+}

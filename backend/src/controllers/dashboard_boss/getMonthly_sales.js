@@ -1,35 +1,31 @@
-const { Activity, Sale_product, Salesman } = require("../../db.js");
-const { Op } = require("sequelize");
-const getAllSalesman = require("../salesman/getAllSalesman.js");
+const prisma = require("../../prisma.js");
 
 module.exports = async (id) => {
   const tiempoTranscurrido = Date.now();
   const endDate = new Date(tiempoTranscurrido);
   const startDate = new Date(tiempoTranscurrido - 2629440000);
 
-  const sales = await Sale_product.findAll({
-    attributes: [
-      ["quantity_sale", "quantitySale"],
-      ["price_sale", "priceSale"],
-    ],
-    include: [
-      {
-        model: Activity,
-        where: {
-          createdAt: {
-            [Op.between]: [startDate, endDate],
-          },
+  const sales = await prisma.saleProduct.findMany({
+    where: {
+      activity: {
+        createdAt: {
+          gte: startDate,
+          lte: endDate,
         },
-        include: [
-          {
-            model: Salesman,
-            where: {
-              bossId: id,
-            },
-          },
-        ],
+        salesman: {
+          bossId: id,
+        },
       },
-    ],
+    },
+    select: {
+      quantity_sale: true,
+      price_sale: true,
+      activity: {
+        select: {
+          createdAt: true,
+        },
+      },
+    },
   });
 
   const month = [
@@ -49,14 +45,14 @@ module.exports = async (id) => {
   const monthly_sales = {};
 
   sales.forEach((sale) => {
-    const { quantitySale, priceSale, activity } = sale.dataValues;
-    const numberMonth = activity.dataValues.createdAt.getMonth();
+    const { quantity_sale, price_sale, activity } = sale;
+    const numberMonth = activity.createdAt.getMonth();
     const nameMonth = month[numberMonth];
-    const date = activity.dataValues.createdAt.toLocaleDateString();
+    const date = activity.createdAt.toLocaleDateString();
     if (monthly_sales[nameMonth]) {
-      monthly_sales[nameMonth][date] += quantitySale * priceSale;
+      monthly_sales[nameMonth][date] += quantity_sale * Number(price_sale);
     } else {
-      monthly_sales[nameMonth] = { [date]: quantitySale * priceSale };
+      monthly_sales[nameMonth] = { [date]: quantity_sale * Number(price_sale) };
     }
   });
 

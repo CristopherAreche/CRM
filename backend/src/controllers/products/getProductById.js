@@ -1,12 +1,8 @@
-const { Product } = require('../../db.js');
+const prisma = require("../../prisma.js");
 
 module.exports = async (id) => {
-    if (!id)
-        throw new Error('(id) Product required')
+  if (!id) throw new Error("(id) Product required");
 
-    if (id) {
-        const product = await Product.findByPk(id);
-        return product
-    }
-
-}
+  const product = await prisma.product.findUnique({ where: { id } });
+  return product;
+};

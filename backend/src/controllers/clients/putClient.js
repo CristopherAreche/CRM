@@ -1,14 +1,13 @@
-const { Client } = require("../../db.js");
+const prisma = require("../../prisma.js");
 const getClientById = require("./getClientById.js");
 
 module.exports = async (data) => {
   const dataAct = { ...data };
   const id = dataAct.id;
   delete dataAct.id;
-  const [resultado] = await Client.update(dataAct, {
-    where: {
-      id,
-    },
+  const resultado = await prisma.client.update({
+    where: { id },
+    data: dataAct,
   });
 
   if (resultado) {

@@ -1,30 +1,23 @@
-const { Product } = require("../../db.js");
+const prisma = require("../../prisma.js");
 const getProductById = require("./getProductById.js");
 const fs = require("fs");
 const uploadFile = require("../../firebase.js");
 
 const updateProduct = async (data, path) => {
+  const dataAct = { ...data };
+  const id = dataAct.id;
+  delete dataAct.id;
+
   if (path) {
     const img = fs.readFileSync(path).buffer;
     const image = await uploadFile(img, "products");
-    const dataAct = { ...data, image };
-    var id = dataAct.id;
-    delete dataAct.id;
-    var [resultado] = await Product.update(dataAct, {
-      where: {
-        id,
-      },
-    });
-  } else {
-    const dataAct = { ...data };
-    var id = dataAct.id;
-    delete dataAct.id;
-    var [resultado] = await Product.update(dataAct, {
-      where: {
-        id,
-      },
-    });
+    dataAct.image = image;
   }
+
+  const resultado = await prisma.product.update({
+    where: { id },
+    data: dataAct,
+  });
 
   if (resultado) {
     const product = await getProductById(id);

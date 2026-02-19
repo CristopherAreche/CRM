@@ -1,22 +1,27 @@
-const { Activity } = require('../../db.js');
+const prisma = require("../../prisma.js");
+const { unmapMethod, unmapState } = require("../utils/enumMaps.js");
+
+const unmapActivity = (act) => {
+  if (!act) return act;
+  return { ...act, method: unmapMethod(act.method), state: unmapState(act.state) };
+};
 
 module.exports = async ({ id, clientId, salesmanId }) => {
+  if (!id && !clientId && !salesmanId)
+    throw new Error("id activity's, clientId or salesmanId required");
 
-    if (!id && !clientId && !salesmanId)
-        throw new Error('id activity\'s, clientId or salesmanId required')
+  if (clientId) {
+    const activity = await prisma.activity.findMany({ where: { clientId } });
+    return activity.map(unmapActivity);
+  }
 
-    if (clientId) {
-        const activity = await Activity.findAll({ where: { clientId } })
-        return activity
-    }
+  if (id) {
+    const activity = await prisma.activity.findUnique({ where: { id } });
+    return unmapActivity(activity);
+  }
 
-    if (id) {
-        const activity = await Activity.findByPk(id)
-        return activity
-    }
-
-    if (salesmanId) {
-        const activity = await Activity.findAll({ where: { salesmanId } })
-        return activity
-    }
-}
+  if (salesmanId) {
+    const activity = await prisma.activity.findMany({ where: { salesmanId } });
+    return activity.map(unmapActivity);
+  }
+};

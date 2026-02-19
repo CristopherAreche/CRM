@@ -1,4 +1,4 @@
-const { Client, Salesman } = require("../../db.js");
+const prisma = require("../../prisma.js");
 const statusNegotiation = require("./statusNegotiation.js");
 const ctotalPurchased = require("./totalPurchased.js");
 
@@ -8,19 +8,17 @@ module.exports = async ({ salesmanId, bossId }) => {
   let allClients;
 
   if (salesmanId) {
-    const allClientsbyseller = await Client.findAll({ where: { salesmanId } });
-    allClients = allClientsbyseller.map((e) => e.dataValues);
+    allClients = await prisma.client.findMany({ where: { salesmanId } });
   } else if (bossId) {
-    var allClientsbyboss = await Client.findAll({
-      include: {
-        model: Salesman,
-        where: {
+    allClients = await prisma.client.findMany({
+      where: {
+        salesman: {
           bossId,
         },
       },
     });
-    allClients = allClientsbyboss.map((e) => e.dataValues);
   }
+
   console.log("allClients", allClients);
   const resultadoFinal = await Promise.all(
     allClients.map(async (c) => {
@@ -29,7 +27,6 @@ module.exports = async ({ salesmanId, bossId }) => {
         estado = { state: "Pendiente" };
       }
       const { totalPurchased, categories } = await ctotalPurchased({
-        // delete c.dataValues.salesman;
         id: c.id,
       });
       return {

@@ -1,33 +1,28 @@
-const { Salesman, Boss, Product } = require("../../db.js");
-const { where, Op } = require("sequelize");
+const prisma = require("../../prisma.js");
 
 module.exports = async (id) => {
-    const salesmen = await Salesman.findAll({
-        where: {
-            id
+  const salesman = await prisma.salesman.findUnique({
+    where: { id },
+    include: {
+      boss: {
+        include: {
+          products: {
+            where: {
+              discount: {
+                gt: 0,
+              },
+            },
+          },
         },
-        include: [
-            {
-                model: Boss,
-                include: [
-                    {
-                        model: Product,
-                        where: {
-                            discount: {
-                                [Op.gt]: 0 // Filtra por "discount" mayor a 0
-                            }
-                        }
-                    }
-                ]
-            }
-        ]
-    });
+      },
+    },
+  });
 
-    const products= salesmen[0].dataValues.boss.dataValues.products
-    const offer_products = products.map((p) => {        
-        const { name, quantity, discount } = p.dataValues
-        return { name, quantity, discount }
-    })
+  const products = salesman.boss.products;
+  const offer_products = products.map((p) => {
+    const { name, quantity, discount } = p;
+    return { name, quantity, discount: Number(discount) };
+  });
 
-    return offer_products
-}   
+  return offer_products;
+};

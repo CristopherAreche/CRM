@@ -1,31 +1,23 @@
-const { Boss } = require("../../db.js");
+const prisma = require("../../prisma.js");
 const getBossById = require("./getBossById.js");
 const fs = require("fs");
 const uploadFile = require("../../firebase.js");
 
 const updateBoss = async (data, path) => {
-  //data={id,method,state,from,to,message,subject,attached,saleman_id,***sale_id}
+  const dataAct = { ...data };
+  const id = dataAct.id;
+  delete dataAct.id;
+
   if (path) {
     const img = fs.readFileSync(path).buffer;
     const logo = await uploadFile(img, "boss");
-    const dataAct = { ...data, logo };
-    var id = dataAct.id;
-    delete dataAct.id;
-    var [resultado] = await Boss.update(dataAct, {
-      where: {
-        id,
-      },
-    });
-  } else {
-    const dataAct = { ...data };
-    var id = dataAct.id;
-    delete dataAct.id;
-    var resultado = await Boss.update(dataAct, {
-      where: {
-        id,
-      },
-    });
+    dataAct.logo = logo;
   }
+
+  const resultado = await prisma.boss.update({
+    where: { id },
+    data: dataAct,
+  });
 
   if (resultado) {
     const boss = await getBossById(id);

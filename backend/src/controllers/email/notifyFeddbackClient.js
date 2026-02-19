@@ -6,8 +6,8 @@ const createTrans = () => {
   const transporter = nodemailer.createTransport({
     service: "Gmail", // true for 465, false for other ports
     auth: {
-      user: "jhohanjianpierre@gmail.com",
-      pass: "ifhpwgudrixwaxxw",
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
   });
   return transporter;

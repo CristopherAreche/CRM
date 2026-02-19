@@ -1,20 +1,19 @@
-const { Salesman, Client, Task } = require("../../db.js");
+const prisma = require("../../prisma.js");
 const { sendMail } = require("../email/notifyActivityExpiration.js");
 
 const fu = async () => {
-  let tasks = await Task.findAll();
-  let values = await tasks.map((task) => task.dataValues);
-  return values;
+  let tasks = await prisma.task.findMany();
+  return tasks;
 };
 
 module.exports = async () => {
   try {
     let dateToday = new Date();
-    let day = dateToday.getDate().toString().padStart(2, "0"); // Obtener día como cadena con dos dígitos
-    let month = (dateToday.getMonth() + 1).toString().padStart(2, "0"); // Obtener mes como cadena con dos dígitos
-    let year = dateToday.getFullYear().toString(); // Obtener año como cadena
+    let day = dateToday.getDate().toString().padStart(2, "0");
+    let month = (dateToday.getMonth() + 1).toString().padStart(2, "0");
+    let year = dateToday.getFullYear().toString();
     let dateArray = [year, month, day];
-    let date = dateArray.join("-"); // Unir la fecha como cadena usando el guión como separador
+    let date = dateArray.join("-");
 
     let info = await fu();
     let data = info.map((i) => {
@@ -27,10 +26,7 @@ module.exports = async () => {
         salesmanId: i.salesmanId,
       };
     });
-    // console.log(date.slice(0, 4));
-    // console.log(date.slice(5, 7));
-    // console.log(date.slice(8, 10));
-    // console.log(data[0].due_date);
+
     let task = [];
     for (let i = 0; i < data.length; i++) {
       if (
@@ -53,8 +49,12 @@ module.exports = async () => {
         data[i].due_date.slice(8, 10) - date.slice(8, 10) >= 1 &&
         data[i].due_date.slice(8, 10) - date.slice(8, 10) <= 2
       ) {
-        salesman = (await Salesman.findByPk(task[i].salesmanId)).dataValues;
-        client = (await Client.findByPk(task[i].clientId)).dataValues;
+        salesman = await prisma.salesman.findUnique({
+          where: { id: task[i].salesmanId },
+        });
+        client = await prisma.client.findUnique({
+          where: { id: task[i].clientId },
+        });
 
         sendMail(
           salesman,
@@ -67,6 +67,6 @@ module.exports = async () => {
       client = {};
     }
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error(error);
   }
 };

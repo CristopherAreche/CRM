@@ -1,5 +1,4 @@
-const { Activity, Sale_product, Salesman } = require("../../db.js");
-const { Op } = require("sequelize");
+const prisma = require("../../prisma.js");
 const getAllSalesman = require("../salesman/getAllSalesman.js");
 
 module.exports = async (id) => {
@@ -7,40 +6,38 @@ module.exports = async (id) => {
   const endDate = new Date(tiempoTranscurrido);
   const startDate = new Date(tiempoTranscurrido - 2592000000);
 
-  const sales = await Sale_product.findAll({
-    attributes: [
-      ["quantity_sale", "quantitySale"],
-      ["price_sale", "priceSale"],
-    ],
-    include: [
-      {
-        model: Activity,
-        where: {
-          createdAt: {
-            [Op.between]: [startDate, endDate],
-          },
+  const sales = await prisma.saleProduct.findMany({
+    where: {
+      activity: {
+        createdAt: {
+          gte: startDate,
+          lte: endDate,
         },
-        include: [
-          {
-            model: Salesman,
-            where: {
-              bossId: id,
-            },
-          },
-        ],
+        salesman: {
+          bossId: id,
+        },
       },
-    ],
+    },
+    select: {
+      quantity_sale: true,
+      price_sale: true,
+      activity: {
+        select: {
+          salesman: true,
+        },
+      },
+    },
   });
 
   const monthly_sales = {};
 
   sales.forEach((sale) => {
-    const { quantitySale, priceSale, activity } = sale.dataValues;
-    const salesman = activity.dataValues.salesman.dataValues;
+    const { quantity_sale, price_sale, activity } = sale;
+    const salesman = activity.salesman;
     if (monthly_sales[salesman.id]) {
-      monthly_sales[salesman.id] += quantitySale * priceSale;
+      monthly_sales[salesman.id] += quantity_sale * Number(price_sale);
     } else {
-      monthly_sales[salesman.id] = quantitySale * priceSale;
+      monthly_sales[salesman.id] = quantity_sale * Number(price_sale);
     }
   });
 

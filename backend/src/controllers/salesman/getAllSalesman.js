@@ -1,39 +1,36 @@
-const { Salesman, Feedback, conn } = require("../../db.js");
+const prisma = require("../../prisma.js");
 const customSalesman = require("./customSalesman.js");
 
 const getAllSalesman = async (data) => {
   console.log(data);
   const { id, name, address, email, phone, enable, bossId } = data;
   if (id) {
-    const salesman = await Salesman.findByPk(id, {
-      include: [
-        {
-          model: Feedback,
-          order: [["createdAt", "DESC"]],
-          limit: 50,
+    const salesman = await prisma.salesman.findUnique({
+      where: { id },
+      include: {
+        feedbacks: {
+          orderBy: { createdAt: "desc" },
+          take: 50,
         },
-      ],
+      },
     });
     return await customSalesman(salesman);
   }
 
   if (name || address || email || phone || enable) {
-    // delete data.bossId
     const variable = name || address || email || phone || enable;
     const [propiedad] = Object.keys(data);
-    const allSalesman = await Salesman.findAll({
+    const allSalesman = await prisma.salesman.findMany({
       where: {
         bossId,
         [propiedad]: variable,
       },
-
-      include: [
-        {
-          model: Feedback,
-          order: [["createdAt", "DESC"]],
-          limit: 50,
+      include: {
+        feedbacks: {
+          orderBy: { createdAt: "desc" },
+          take: 50,
         },
-      ],
+      },
     });
 
     const result = await Promise.all(
@@ -42,17 +39,16 @@ const getAllSalesman = async (data) => {
     return result[0];
   }
 
-  const allSalesman = await Salesman.findAll({
+  const allSalesman = await prisma.salesman.findMany({
     where: {
       bossId,
     },
-    include: [
-      {
-        model: Feedback,
-        order: [["createdAt", "DESC"]],
-        limit: 50,
+    include: {
+      feedbacks: {
+        orderBy: { createdAt: "desc" },
+        take: 50,
       },
-    ],
+    },
   });
   console.log("este es conbsole.log() en linea 56 getallSalesman", allSalesman);
   const result = await Promise.all(

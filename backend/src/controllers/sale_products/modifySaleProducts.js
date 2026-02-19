@@ -1,23 +1,17 @@
-const { Sale_product } = require("../../db.js");
+const prisma = require("../../prisma.js");
 const getSaleProducts = require("./getSaleProducts.js");
 
-
 module.exports = async (data) => {
-  const dataAct = { ...data }
-  const id = dataAct.id
-  delete dataAct.id
-  const [resultado] = await Sale_product.update(dataAct, {
-    where: {
-      id,
-    }
-  })
+  const dataAct = { ...data };
+  const id = dataAct.id;
+  delete dataAct.id;
+  const resultado = await prisma.saleProduct.update({
+    where: { id },
+    data: dataAct,
+  });
 
   if (resultado) {
-    const sale_product = await getSaleProducts({ id })
-    return sale_product
-  }
-  else
-    throw new Error('Failed to update, missing information')
-}
-
-
+    const sale_product = await getSaleProducts({ id });
+    return sale_product;
+  } else throw new Error("Failed to update, missing information");
+};

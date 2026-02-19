@@ -1,5 +1,4 @@
-const { Activity, Sale_product, Salesman } = require("../../db.js");
-const { Op } = require("sequelize");
+const prisma = require("../../prisma.js");
 
 module.exports = async (id) => {
   const tiempoTranscurrido = Date.now();
@@ -7,29 +6,27 @@ module.exports = async (id) => {
   const startDate = new Date(tiempoTranscurrido - 31536000000);
   console.log("ID EN LINEA 8 GETANUAL_SALES", id);
 
-  const sales = await Sale_product.findAll({
-    attributes: [
-      ["quantity_sale", "quantitySale"],
-      ["price_sale", "priceSale"],
-    ],
-    include: [
-      {
-        model: Activity,
-        where: {
-          createdAt: {
-            [Op.between]: [startDate, endDate],
-          },
+  const sales = await prisma.saleProduct.findMany({
+    where: {
+      activity: {
+        createdAt: {
+          gte: startDate,
+          lte: endDate,
         },
-        include: [
-          {
-            model: Salesman,
-            where: {
-              bossId: id,
-            },
-          },
-        ],
+        salesman: {
+          bossId: id,
+        },
       },
-    ],
+    },
+    select: {
+      quantity_sale: true,
+      price_sale: true,
+      activity: {
+        select: {
+          createdAt: true,
+        },
+      },
+    },
   });
   console.log("ESTO ES SALES EN LINEA 34 GET ANUAL_SALES", sales);
 
@@ -49,14 +46,14 @@ module.exports = async (id) => {
     "December",
   ];
   sales.forEach((sale) => {
-    const { quantitySale, priceSale, activity } = sale.dataValues;
-    const m = activity.dataValues.createdAt.getMonth();
-    const year = activity.dataValues.createdAt.getFullYear();
+    const { quantity_sale, price_sale, activity } = sale;
+    const m = activity.createdAt.getMonth();
+    const year = activity.createdAt.getFullYear();
     const date = `${month[m]}/${year}`;
     if (annual_sales[date]) {
-      annual_sales[date] += quantitySale * priceSale;
+      annual_sales[date] += quantity_sale * Number(price_sale);
     } else {
-      annual_sales[date] = quantitySale * priceSale;
+      annual_sales[date] = quantity_sale * Number(price_sale);
     }
   });
 

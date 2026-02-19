@@ -6,15 +6,25 @@ const routes = require("./routes/index.js");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
-
-require("./db.js");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
 const server = express();
 
 server.name = "API";
 
+server.use(helmet());
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+server.use("/api", apiLimiter);
+
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: process.env.CORS_ORIGIN || "http://localhost:3000",
   methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
   allowedHeaders: [
     "Content-Type",

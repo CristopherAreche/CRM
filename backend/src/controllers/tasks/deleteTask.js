@@ -1,9 +1,7 @@
-const { Task } = require('../../db.js');
+const prisma = require("../../prisma.js");
 
 module.exports = async (id) => {
-    const resp = await Task.destroy({ where: { id } })
-    if (resp)
-        return { message: `Tarea borrada` }
-    else
-        throw new Error('Tarea no encontrada')
-}
+  const resp = await prisma.task.delete({ where: { id } });
+  if (resp) return { message: `Tarea borrada` };
+  else throw new Error("Tarea no encontrada");
+};

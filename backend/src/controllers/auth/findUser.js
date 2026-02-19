@@ -1,4 +1,4 @@
-const { Salesman, Boss } = require("../../db.js");
+const prisma = require("../../prisma.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const createBoss = require("../Bosses/CreateBoss.js");
@@ -7,23 +7,23 @@ const createToken = (user, role) => {
   const token = jwt.sign(
     {
       exp: Math.floor(Date.now() / 1000) * 60 * 60 * 24 * 7,
-      ...user.dataValues,
+      ...user,
       role,
     },
-    "secret"
+    process.env.JWT_SECRET
   );
   return { success: true, token };
 };
 
 module.exports = async (data) => {
-  console.log("esto es daaaaaaaaata",data);
+  console.log("esto es daaaaaaaaata", data);
   const { email, password, name, nickname } = data;
 
-  let salesman = await Salesman.findOne({ where: { email: email } });
+  let salesman = await prisma.salesman.findFirst({ where: { email: email } });
   if (salesman !== null) {
     if (password !== null) {
-      if (bcrypt.compareSync(password, salesman.dataValues["password"]))
-        if (salesman.dataValues.enable !== false) {
+      if (bcrypt.compareSync(password, salesman.password))
+        if (salesman.enable !== false) {
           return createToken(salesman, "seller");
         } else {
           throw new Error("user blocked");
@@ -32,10 +32,10 @@ module.exports = async (data) => {
     }
   }
 
-  let boss = await Boss.findOne({ where: { email: email } });
+  let boss = await prisma.boss.findFirst({ where: { email: email } });
   if (boss !== null) {
     if (password !== null) {
-      if (bcrypt.compareSync(password, boss.dataValues["password"]))
+      if (bcrypt.compareSync(password, boss.password))
         return createToken(boss, "admin");
       else throw new Error("Boss Password Incorrect");
     } else {
@@ -55,38 +55,3 @@ module.exports = async (data) => {
 
   throw new Error("User Not Exist");
 };
-
-//   try {
-//     let boss = await Boss.findOne({ where: { email: email } });
-
-//     // console.log('***********PASSWORD********', password)
-//     if (!boss) {
-//       let salesman = await Salesman.findOne({ where: { email: email } });
-//       if (bcrypt.compareSync(password, salesman.dataValues['password'])) {
-//         const token = jwt.sign({
-//           exp: Math.floor(Date.now()/1000) * 60 * 60 * 24 * 7,
-//           ...salesman.dataValues,
-//           role: "seller"
-//         }, "secret")
-//         return {success:true, token};
-//       }
-//       // if (password === salesman.dataValues.password) {
-//       //   return { ...salesman.dataValues, role: "seller" };
-//       // }
-//     }
-
-//     if (bcrypt.compareSync(password, boss.dataValues['password'])) {
-//       const token = jwt.sign({
-//         exp: Math.floor(Date.now()/1000) * 60 * 60 * 24 * 7,
-//         ...boss.dataValues,
-//         role: "admin"
-//       }, "secret")
-//       return {success:true, token};
-//     }
-//     // if (password === boss.dataValues.password) {
-//     //   return { ...boss.dataValues, role: "admin" };
-//     // }
-//   } catch (error) {
-//     return { error: error.message }
-//   }
-// }

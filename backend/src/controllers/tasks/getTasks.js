@@ -1,22 +1,21 @@
-const { Task } = require('../../db.js');
+const prisma = require("../../prisma.js");
 
 module.exports = async ({ id, clientId, salesmanId }) => {
+  if (!id && !clientId && !salesmanId)
+    throw new Error("id task's, clientId or salesmanId required");
 
-    if (!id && !clientId && !salesmanId)
-        throw new Error('id task\'s, clientId or salesmanId required')
+  if (clientId) {
+    const task = await prisma.task.findMany({ where: { clientId } });
+    return task;
+  }
 
-    if (clientId) {
-        const task = await Task.findAll({ where: { clientId } })
-        return task
-    }
+  if (id) {
+    const task = await prisma.task.findUnique({ where: { id } });
+    return task;
+  }
 
-    if (id) {
-        const activity = await Task.findByPk(id)
-        return activity
-    }
-
-    if (salesmanId) {
-        const activity = await Task.findAll({ where: { salesmanId } })
-        return activity
-    }
-}
+  if (salesmanId) {
+    const task = await prisma.task.findMany({ where: { salesmanId } });
+    return task;
+  }
+};
