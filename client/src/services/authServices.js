@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import swal from "sweetalert";
-import { jwtVerify } from "jose";
+import { decodeJwt } from "jose";
 
 const API_URL_ALLS_BOSS = `${process.env.REACT_APP_URL}/boss`;
 const API_URL_SELLER = `${process.env.REACT_APP_URL}/salesman`;
@@ -83,10 +83,7 @@ export const login = createAsyncThunk("user/login", async (data) => {
     if (response && response.data && response.data.token) {
       cookies.set("myToken", response.data.token, { path: "/" });
     }
-    const { payload } = await jwtVerify(
-      response.data.token,
-      new TextEncoder().encode("secret")
-    );
+    const payload = decodeJwt(response.data.token);
     return payload;
   } catch (error) {
     if (error.response.data.error === "user blocked")
