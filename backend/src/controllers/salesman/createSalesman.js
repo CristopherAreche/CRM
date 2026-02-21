@@ -1,6 +1,6 @@
 const prisma = require("../../prisma.js");
 const getBossById = require("../Bosses/getBossById.js");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const getAllSalesman = require("./getAllSalesman.js");
 const { sendMail } = require("../email/notifyNewSalesman.js");
 const fs = require("fs");

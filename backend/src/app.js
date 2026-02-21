@@ -34,7 +34,7 @@ const corsOptions = {
     "Accept",
   ],
   credentials: true,
-  preflightContinue: true,
+  preflightContinue: false,
 };
 
 server.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));

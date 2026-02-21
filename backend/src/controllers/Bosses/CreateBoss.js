@@ -1,6 +1,6 @@
 const prisma = require("../../prisma.js");
 const { sendMail } = require("../email/email.js");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const fs = require("fs");
 const uploadFile = require("../../firebase.js");
 
