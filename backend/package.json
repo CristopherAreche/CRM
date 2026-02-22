@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "nodemon index.js",
     "start": "npx prisma db push --accept-data-loss && node index.js",
     "seed": "npx prisma db seed",
@@ -44,13 +45,13 @@
     "node-cron": "^3.0.2",
     "nodemailer": "^6.9.1",
     "pg": "^8.11.3",
+    "prisma": "^7.4.0",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^8.2.1",
     "nodemon": "^2.0.22",
-    "prisma": "^7.4.0",
     "supertest": "^6.0.1",
     "supertest-session": "^4.1.0"
   }
