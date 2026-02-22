@@ -28,10 +28,7 @@ export const postLogin = createAsyncThunk(
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_URL}/login`,
-        loginUser,
-        {
-          withCredentials: true,
-        }
+        loginUser
       );
       console.alert(response.data);
     } catch (error) {
@@ -74,10 +71,7 @@ export const login = createAsyncThunk("user/login", async (data) => {
   try {
     const response = await axios.post(
       `${process.env.REACT_APP_URL}/login`,
-      { email, password, name, nickname },
-      {
-        withCredentials: true,
-      }
+      { email, password, name, nickname }
     );
     const cookies = new Cookies();
     if (response && response.data && response.data.token) {
