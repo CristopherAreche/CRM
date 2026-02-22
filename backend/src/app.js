@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const routes = require("./routes/index.js");
 const multer = require("multer");
 const path = require("path");
+const os = require("os");
 const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
@@ -77,7 +78,7 @@ server.set("src engine", "ejs");
 server.use(
   multer({
     // storage,
-    dest: path.join(__dirname, "./public/images"),
+    dest: process.env.VERCEL ? os.tmpdir() : path.join(__dirname, "./public/images"),
     fileFilter: function (req, file, cb) {
       const filetype = /jpeg|jpg|png|gif/;
       const mimetype = filetype.test(file.mimetype);
