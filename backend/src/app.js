@@ -14,6 +14,8 @@ const server = express();
 
 server.name = "API";
 
+server.set("trust proxy", 1);
+
 server.use(helmet());
 
 const apiLimiter = rateLimit({
