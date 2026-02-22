@@ -46,7 +46,7 @@
     "nodemailer": "^6.9.1",
     "pg": "^8.11.3",
     "prisma": "^7.4.0",
-    "uuid": "^13.0.0"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
