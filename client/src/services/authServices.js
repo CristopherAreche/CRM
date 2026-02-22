@@ -80,14 +80,15 @@ export const login = createAsyncThunk("user/login", async (data) => {
     const payload = decodeJwt(response.data.token);
     return payload;
   } catch (error) {
-    if (error.response.data.error === "user blocked")
+    const message = error.response?.data?.error || error.message || "Error de conexión con el servidor";
+    if (message === "user blocked")
       swal(
         "Error",
         "Tu usuario ha sido deshabilitado, por favor comunicate con tu jefe",
         "error"
       );
-    else swal("Error", "Usuario o contraseña incorrectos", "error");
-    return error.response.data.error;
+    else swal("Error", message, "error");
+    throw new Error(message);
   }
 });
 

@@ -73,6 +73,10 @@ const userInfoSlice = createSlice({
 
         state.status = "succeeded";
         state.User = action.payload;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       });
   },
 });
