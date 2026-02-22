@@ -25,7 +25,7 @@ const apiLimiter = rateLimit({
 server.use("/api", apiLimiter);
 
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+  origin: "*",
   methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
   allowedHeaders: [
     "Content-Type",
@@ -34,8 +34,6 @@ const corsOptions = {
     "X-Requested-With",
     "Accept",
   ],
-  credentials: true,
-  preflightContinue: false,
 };
 
 server.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
