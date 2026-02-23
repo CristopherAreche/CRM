@@ -1,9 +1,30 @@
 const prisma = require("../../prisma.js");
 const customSalesman = require("./customSalesman.js");
 
+const parsePagination = (page, limit) => {
+  const parsedPage = Number.parseInt(page, 10);
+  const parsedLimit = Number.parseInt(limit, 10);
+
+  return {
+    page: Number.isNaN(parsedPage) ? 1 : Math.max(1, parsedPage),
+    limit: Number.isNaN(parsedLimit) ? 20 : Math.min(100, Math.max(1, parsedLimit)),
+  };
+};
+
 const getAllSalesman = async (data) => {
-  console.log(data);
-  const { id, name, address, email, phone, enable, bossId } = data;
+  const {
+    id,
+    name,
+    address,
+    email,
+    phone,
+    enable,
+    bossId,
+    page,
+    limit,
+    search,
+  } = data;
+
   if (id) {
     const salesman = await prisma.salesman.findUnique({
       where: { id },
@@ -14,16 +35,21 @@ const getAllSalesman = async (data) => {
         },
       },
     });
-    return await customSalesman(salesman);
+
+    if (!salesman) return null;
+    return customSalesman(salesman);
   }
 
   if (name || address || email || phone || enable) {
     const variable = name || address || email || phone || enable;
-    const [propiedad] = Object.keys(data);
+    const [property] = Object.keys({ name, address, email, phone, enable }).filter(
+      (key) => data[key] !== undefined
+    );
+
     const allSalesman = await prisma.salesman.findMany({
       where: {
         bossId,
-        [propiedad]: variable,
+        [property]: variable,
       },
       include: {
         feedbacks: {
@@ -33,28 +59,59 @@ const getAllSalesman = async (data) => {
       },
     });
 
-    const result = await Promise.all(
-      allSalesman.map(async (salesman) => await customSalesman(salesman))
-    );
+    const result = await Promise.all(allSalesman.map((salesman) => customSalesman(salesman)));
     return result[0];
   }
 
-  const allSalesman = await prisma.salesman.findMany({
-    where: {
-      bossId,
-    },
+  const where = { bossId };
+  if (search) {
+    where.OR = [
+      { name: { contains: search, mode: "insensitive" } },
+      { email: { contains: search, mode: "insensitive" } },
+      { phone: { contains: search, mode: "insensitive" } },
+      { address: { contains: search, mode: "insensitive" } },
+    ];
+  }
+
+  const queryConfig = {
+    where,
+    orderBy: { createdAt: "desc" },
     include: {
       feedbacks: {
         orderBy: { createdAt: "desc" },
         take: 50,
       },
     },
-  });
-  console.log("este es conbsole.log() en linea 56 getallSalesman", allSalesman);
-  const result = await Promise.all(
-    allSalesman.map(async (salesman) => await customSalesman(salesman))
-  );
-  return result;
+  };
+
+  const hasPagination = page !== undefined || limit !== undefined || search !== undefined;
+  if (!hasPagination) {
+    const allSalesman = await prisma.salesman.findMany(queryConfig);
+    return Promise.all(allSalesman.map((salesman) => customSalesman(salesman)));
+  }
+
+  const paging = parsePagination(page, limit);
+
+  const [allSalesman, total] = await Promise.all([
+    prisma.salesman.findMany({
+      ...queryConfig,
+      skip: (paging.page - 1) * paging.limit,
+      take: paging.limit,
+    }),
+    prisma.salesman.count({ where }),
+  ]);
+
+  const mapped = await Promise.all(allSalesman.map((salesman) => customSalesman(salesman)));
+
+  return {
+    data: mapped,
+    meta: {
+      total,
+      page: paging.page,
+      limit: paging.limit,
+      totalPages: Math.max(1, Math.ceil(total / paging.limit)),
+    },
+  };
 };
 
 module.exports = getAllSalesman;

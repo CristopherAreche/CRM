@@ -5,6 +5,7 @@ const createBoss = require("../controllers/Bosses/CreateBoss.js");
 const getAllBosses = require("../controllers/Bosses/getAllBosses.js");
 const getBossById = require("../controllers/Bosses/getBossById.js");
 const updateBoss = require("../controllers/Bosses/updateBoss.js");
+const logger = require("../logger.js");
 
 //----------------------------------- HANDLERS GETS -----------------------------------\\
 const getBoss = async (req, res) => {
@@ -18,7 +19,7 @@ const getBoss = async (req, res) => {
       res.status(200).json(allBosses);
     }
   } catch (error) {
-    console.log("Error en bosshandler", error);
+    logger.error("getBoss failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };
@@ -31,11 +32,10 @@ const postBoss = async (req, res) => {
       var boss = await createBoss(data, req.file.path);
     } else {
       var boss = await createBoss(data);
-      console.log(boss);
     }
     res.status(200).send(boss);
   } catch (error) {
-    console.log("Error en bosshandler", error);
+    logger.error("postBoss failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };
@@ -43,7 +43,6 @@ const postBoss = async (req, res) => {
 //----------------------------------- HANDLERS PUT -----------------------------------\\
 const putBoss = async (req, res) => {
   const data = JSON.parse(req.body.formLogin);
-  console.log(data);
   try {
     if (req.file) {
       var response = await updateBoss(data, req.file.path);
@@ -52,7 +51,7 @@ const putBoss = async (req, res) => {
     }
     res.status(200).send(response);
   } catch (error) {
-    console.log("Error en bosshandler", error);
+    logger.error("putBoss failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };

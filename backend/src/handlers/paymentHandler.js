@@ -2,7 +2,16 @@ require("dotenv").config();
 const { sendMail } = require("../controllers/email/notifyPayBoss.js");
 const axios = require("axios");
 const updateBoss = require("../controllers/Bosses/updateBoss");
+const logger = require("../logger.js");
 const { PAYPAL_API_CLIENT, PAYPAL_API_SECRET, PAYPAL_API } = process.env;
+const PAYPAL_RETURN_URL =
+  process.env.PAYPAL_RETURN_URL || "https://crm2.up.railway.app/api/capture-order";
+const PAYPAL_CANCEL_URL =
+  process.env.PAYPAL_CANCEL_URL || "https://crm2.up.railway.app/api/cancel-order";
+const CLIENT_SUCCESS_URL =
+  process.env.CLIENT_SUCCESS_URL || "https://crm-henry-34b.vercel.app/success";
+const CLIENT_CANCEL_URL =
+  process.env.CLIENT_CANCEL_URL || "https://crm-henry-34b.vercel.app/authentication";
 
 const createOrder = async (req, res) => {
   const { id } = req.body;
@@ -21,8 +30,8 @@ const createOrder = async (req, res) => {
         brand_name: "CRM.com",
         landing_page: "LOGIN",
         user_action: "PAY_NOW",
-        return_url: `https://crm2.up.railway.app/api/capture-order?id=${id}`,
-        cancel_url: "https://crm2.up.railway.app/api/cancel-order",
+        return_url: `${PAYPAL_RETURN_URL}?id=${id}`,
+        cancel_url: PAYPAL_CANCEL_URL,
       },
     };
 
@@ -61,15 +70,14 @@ const createOrder = async (req, res) => {
 
     res.status(200).json(response.data);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error });
+    logger.error("Create order failed", { error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
 const captureOrder = async (req, res) => {
   try {
     const { token, id } = req.query;
-    // console.log('Soy el token *******',token);
 
     const response = await axios.post(
       `${PAYPAL_API}/v2/checkout/orders/${token}/capture`,
@@ -82,41 +90,33 @@ const captureOrder = async (req, res) => {
       }
     );
 
-    console.log('Soy el response');
-    let fechaRegistro = response.data.purchase_units[0].payments.captures[0].create_time;
-    let payDay = new Date(fechaRegistro)
+    const fechaRegistro =
+      response.data.purchase_units[0].payments.captures[0].create_time;
+    const payDay = new Date(fechaRegistro);
     payDay.setDate(payDay.getDate() + 30);
-    // console.log('PAyday',payDay);
 
-
-    const data = { id: id, enable: true , pay_day: payDay};
-    // const data = { id: id, enable: true};
+    const data = { id, enable: true, pay_day: payDay };
     const respuesta = await updateBoss(data);
-    console.log('Soy la respuesta______',respuesta);
 
-    // console.log('Soy el response.data -----------',response.data);
-
-    // console.log(response.data.purchase_units[0].payments.captures[0]);
-    //ACABO DE PEGAR ESTE CODIGO DE NUEVO
-    let info = response.data;
+    const info = response.data;
     const dataPay = {
       ...info,
       ...response.data.purchase_units[0].payments.captures[0],
     };
-    
-    sendMail(respuesta, dataPay);
-    //ACABO DE PEGAR ESTE CODIGO DE NUEVO (ENVIO DE EMAIL AL REALIZAR LA COMPRA)
-    //console.log(response.data.purchase_units[0].payments.captures[0].amount.value)
-    console.log('fianlizó');
-    res.redirect("https://crm-henry-34b.vercel.app/success");
+
+    sendMail(respuesta, dataPay).catch((error) => {
+      logger.error("Payment confirmation email failed", { error: error.message });
+    });
+
+    res.redirect(CLIENT_SUCCESS_URL);
   } catch (err) {
-    // console.log(err);
+    logger.error("Capture order failed", { error: err.message });
     res.status(500).json({ error: err.message });
   }
 };
 
 const cancelOrder = (req, res) => {
-  res.redirect("https://crm-henry-34b.vercel.app/authentication");
+  res.redirect(CLIENT_CANCEL_URL);
 };
 
 module.exports = {

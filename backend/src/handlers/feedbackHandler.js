@@ -4,16 +4,17 @@
 
 const createFeedback = require("../controllers/feedbacks/createFeedback");
 const getFeedback = require("../controllers/feedbacks/getFeedback");
+const logger = require("../logger.js");
 
 //----------------------------------- HANDLERS GETS -----------------------------------\\
 const getFeedbacks = async (req, res) => {
   //se espera uno de los 2 valores
-  const { id, salesmanId } = req.query;
+  const { id, salesmanId, page, limit, search } = req.query;
   try {
-    const response = await getFeedback({ id, salesmanId });
+    const response = await getFeedback({ id, salesmanId, page, limit, search });
     res.status(200).json(response);
   } catch (error) {
-    console.log(error);
+    logger.error("getFeedbacks failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };
@@ -29,7 +30,7 @@ const postFeedback = async (req, res) => {
       res.status(400).send("No ha relacionado a un vendedor");
     }
   } catch (error) {
-    console.log(error);
+    logger.error("postFeedback failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };

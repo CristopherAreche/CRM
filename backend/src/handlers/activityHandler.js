@@ -5,15 +5,23 @@
 const createActivities = require("../controllers/activities/createActivities");
 const getActivities = require("../controllers/activities/getActivities");
 const updateActivities = require("../controllers/activities/updateActivities");
+const logger = require("../logger.js");
 
 //----------------------------------- HANDLERS GETS -----------------------------------\\
 const getActivity = async (req, res) => {
-  const { id, clientId, salesmanId } = req.query;
+  const { id, clientId, salesmanId, page, limit, search } = req.query;
   try {
-    const response = await getActivities({ id, clientId, salesmanId });
+    const response = await getActivities({
+      id,
+      clientId,
+      salesmanId,
+      page,
+      limit,
+      search,
+    });
     res.status(200).json(response);
   } catch (error) {
-    console.log(error);
+    logger.error("getActivity failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };
@@ -30,7 +38,7 @@ const postActivity = async (req, res) => {
       res.status(400).send({ error: error.message });
     }
   } catch (error) {
-    console.log(error);
+    logger.error("postActivity failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };
@@ -42,7 +50,7 @@ const putActivity = async (req, res) => {
     const response = await updateActivities(data);
     res.status(200).json(response);
   } catch (error) {
-    console.log(error);
+    logger.error("putActivity failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };

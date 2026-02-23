@@ -1,23 +1,12 @@
-const nodemailer = require("nodemailer");
+const { createTransporter, resolveSender } = require("./transporter.js");
+const logger = require("../../logger.js");
 
 // NOTIFICACION AL JEFE DE NUEVO VENDEDOR REGISTRADO
 
-const createTrans = () => {
-  const transporter = nodemailer.createTransport({
-    service: "Gmail", // true for 465, false for other ports
-    auth: {
-      user: "jhohanjianpierre@gmail.com",
-      pass: "ifhpwgudrixwaxxw",
-    },
-  });
-  return transporter;
-};
-
 const sendMail = async (salesman, boss) => {
-  // revisar quien es user
-  const transporter = createTrans();
+  const transporter = createTransporter();
   const info = await transporter.sendMail({
-    from: '"Equipo de desarrollo CRM" <pfcrm23@gmail.com>',
+    from: `"Equipo de desarrollo CRM" <${resolveSender()}>`,
     to: boss.email, //Se supone que es el correo del jefe
     subject: `Nuevo Registro de Vendedor!`,
     text: `Cambios en tu plataforma CRM`, // plain text body
@@ -106,7 +95,7 @@ const sendMail = async (salesman, boss) => {
 
 </html>`, // html body
   });
-  console.log("Message sent: %s", info.messageId);
+  logger.info("New salesman email sent", { messageId: info.messageId, email: boss.email });
   return;
 };
 

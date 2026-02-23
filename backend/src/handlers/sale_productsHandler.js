@@ -2,16 +2,23 @@
 const fgetSaleProducts = require("../controllers/sale_products/getSaleProducts.js");
 const createSaleProducts = require("../controllers/sale_products/createSaleProducts.js");
 const updateSaleProducts = require("../controllers/sale_products/modifySaleProducts.js");
+const logger = require("../logger.js");
 //Aca deberiamos de importar nuestros controllers
 
 //----------------------------------- HANDLERS GETS -----------------------------------\\
 const getSaleProducts = async (req, res) => {
-  const { id, activityId } = req.query;
+  const { id, activityId, page, limit, search } = req.query;
   try {
-    const sale_products = await fgetSaleProducts({ id, activityId });
+    const sale_products = await fgetSaleProducts({
+      id,
+      activityId,
+      page,
+      limit,
+      search,
+    });
     res.status(200).send(sale_products);
   } catch (error) {
-    console.log(error);
+    logger.error("getSaleProducts failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };
@@ -23,7 +30,7 @@ const postSaleProduct = async (req, res) => {
     const response = await createSaleProducts(data);
     res.status(200).send(response);
   } catch (error) {
-    console.log(error);
+    logger.error("postSaleProduct failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };
@@ -35,7 +42,7 @@ const putSaleProduct = async (req, res) => {
     const response = await updateSaleProducts(data);
     res.status(200).send(response);
   } catch (error) {
-    console.log(error);
+    logger.error("putSaleProduct failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };

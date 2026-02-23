@@ -6,6 +6,7 @@ const {
   postSaleman,
   putSaleman,
 } = require("../handlers/salemansHandler");
+const authorize = require("../middlewares/roleMiddleware.js");
 
 const salemansRouter = Router();
 
@@ -19,8 +20,8 @@ const salesmanPutValidation = [
   validate,
 ];
 
-salemansRouter.get("/salesman", getSalemans);
-salemansRouter.post("/salesman", salesmanPostValidation, postSaleman);
-salemansRouter.put("/salesman", salesmanPutValidation, putSaleman);
+salemansRouter.get("/salesman", authorize("admin", "seller"), getSalemans);
+salemansRouter.post("/salesman", authorize("admin"), salesmanPostValidation, postSaleman);
+salemansRouter.put("/salesman", authorize("admin", "seller"), salesmanPutValidation, putSaleman);
 
 module.exports = salemansRouter;

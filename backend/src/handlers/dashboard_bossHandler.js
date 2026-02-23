@@ -3,6 +3,7 @@
 //Aca deberiamos de importar nuestros controllers
 
 const fgetDashboard_boss = require("../controllers/dashboard_boss/getDashboard_boss");
+const logger = require("../logger.js");
 
 //----------------------------------- HANDLERS GETS -----------------------------------\\
 const getDashboard_boss = async (req, res) => {
@@ -11,7 +12,7 @@ const getDashboard_boss = async (req, res) => {
     const response = await fgetDashboard_boss(id);
     res.status(200).json(response);
   } catch (error) {
-    console.log(error);
+    logger.error("getDashboard_boss failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };

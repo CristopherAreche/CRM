@@ -1,28 +1,10 @@
-const nodemailer = require("nodemailer");
+const { createTransporter, resolveSender } = require("./transporter.js");
+const logger = require("../../logger.js");
 
-const createTrans = () => {
-  // const transporter = nodemailer.createTransport({
-  //   host: "smtp.gmail.com",
-  //   port: 465,
-  //   secure: true, // true for 465, false for other ports
-  //   auth: {
-  //     user: "frankcito639@gmail.com", // generated ethereal user
-  //     pass: "fnmuboojokaxxgkl", // generated ethereal password
-  //   },
-  // });
-  const transporter = nodemailer.createTransport({
-    service: "Gmail", // true for 465, false for other ports
-    auth: {
-      user: "jhohanjianpierre@gmail.com",
-      pass: "ifhpwgudrixwaxxw",
-    },
-  });
-  return transporter;
-};
 const sendMail = async (user) => {
-  const transporter = createTrans();
+  const transporter = createTransporter();
   const info = await transporter.sendMail({
-    from: '"CRM" <jhohanjianpierre@gmail.com>',
+    from: `"CRM" <${resolveSender()}>`,
     to: `${user.email}`,
     subject: `Bienvenido a CRM ${user.name}`, // Subject line
     text: "Gracias por preferirnos!", // plain text body
@@ -114,7 +96,7 @@ const sendMail = async (user) => {
   </body>
 </html>`, // html body
   });
-  console.log("Message sent: %s", info.messageId);
+  logger.info("Welcome email sent", { messageId: info.messageId, email: user.email });
   return;
 };
 

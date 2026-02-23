@@ -40,6 +40,7 @@ model Boss {
   salesmen            Salesman[]
 
   @@map("bosses")
+  @@index([email])
 }
 
 model Salesman {
@@ -61,6 +62,8 @@ model Salesman {
   tasks      Task[]
 
   @@map("salesmen")
+  @@index([email])
+  @@index([bossId])
 }
 
 model Client {
@@ -78,6 +81,8 @@ model Client {
   tasks      Task[]
 
   @@map("clients")
+  @@index([email])
+  @@index([salesmanId])
 }
 
 model Product {
@@ -97,6 +102,7 @@ model Product {
   saleProducts SaleProduct[]
 
   @@map("products")
+  @@index([bossId])
 }
 
 model Activity {
@@ -117,6 +123,8 @@ model Activity {
   saleProducts SaleProduct[]
 
   @@map("activities")
+  @@index([clientId])
+  @@index([salesmanId])
 }
 
 model SaleProduct {
@@ -131,6 +139,8 @@ model SaleProduct {
   product       Product?  @relation(fields: [productId], references: [id])
 
   @@map("sale_products")
+  @@index([activityId])
+  @@index([productId])
 }
 
 model Feedback {
@@ -142,6 +152,7 @@ model Feedback {
   salesman   Salesman? @relation(fields: [salesmanId], references: [id])
 
   @@map("feedbacks")
+  @@index([salesmanId])
 }
 
 model Task {
@@ -158,4 +169,6 @@ model Task {
   salesman    Salesman? @relation(fields: [salesmanId], references: [id])
 
   @@map("tasks")
+  @@index([salesmanId])
+  @@index([clientId])
 }

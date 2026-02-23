@@ -6,11 +6,12 @@
   "scripts": {
     "postinstall": "prisma generate",
     "dev": "nodemon index.js",
-    "start": "npx prisma db push --accept-data-loss && node index.js",
+    "start": "npx prisma db push && node index.js",
     "seed": "npx prisma db seed",
     "db:migrate": "npx prisma migrate dev",
     "db:studio": "npx prisma studio",
-    "test": "mocha -w ./tests/**/*.spec.js"
+    "test": "mocha -w ./tests/**/*.spec.js",
+    "test:ci": "mocha ./tests/**/*.spec.js --ignore ./tests/models/** --ignore ./tests/routes/**"
   },
   "prisma": {
     "seed": "node prisma/seed.js"

@@ -1,23 +1,12 @@
-const nodemailer = require("nodemailer");
+const { createTransporter, resolveSender } = require("./transporter.js");
+const logger = require("../../logger.js");
 
 // NOTIFICACION CADUCIDAD DE TAREA
 
-const createTrans = () => {
-  const transporter = nodemailer.createTransport({
-    service: "Gmail", // true for 465, false for other ports
-    auth: {
-      user: "jhohanjianpierre@gmail.com",
-      pass: "ifhpwgudrixwaxxw",
-    },
-  });
-  return transporter;
-};
-
 const sendMail = async (salesman, client, task, time) => {
-  // revisar quien es user
-  const transporter = createTrans();
+  const transporter = createTransporter();
   const info = await transporter.sendMail({
-    from: '"Equipo de desarrollo CRM" <pfcrm23@gmail.com>',
+    from: `"Equipo de desarrollo CRM" <${resolveSender()}>`,
     to: salesman.email, //Se supone que es el correo del vendedor
     subject: `Recordatorio de Tareas Pendientes!`,
     text: `Puede que la fecha limite de tu tarea este por expirar...`, // plain text body
@@ -111,7 +100,7 @@ const sendMail = async (salesman, client, task, time) => {
 
 </html>`, // html body
   });
-  console.log("Message sent: %s", info.messageId);
+  logger.info("Task expiration email sent", { messageId: info.messageId, email: salesman.email });
   return;
 };
 

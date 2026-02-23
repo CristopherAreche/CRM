@@ -9,6 +9,7 @@ const os = require("os");
 const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const logger = require("./logger.js");
 
 const server = express();
 
@@ -26,8 +27,19 @@ const apiLimiter = rateLimit({
 });
 server.use("/api", apiLimiter);
 
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",").map((origin) => origin.trim()).filter(Boolean)
+  : ["http://localhost:3000"];
+
 const corsOptions = {
-  origin: "*",
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error("Not allowed by CORS"));
+  },
   methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
   allowedHeaders: [
     "Content-Type",
@@ -36,6 +48,8 @@ const corsOptions = {
     "X-Requested-With",
     "Accept",
   ],
+  credentials: true,
+  preflightContinue: false,
 };
 
 server.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
@@ -98,7 +112,7 @@ server.use((err, req, res, next) => {
   // eslint-disable-line no-unused-vars
   const status = err.status || 500;
   const message = err.message + " " + Date.now() || err;
-  console.error(err);
+  logger.error("Unhandled error", { error: err.message, path: req.path, status });
   res.status(status).send(message);
 });
 

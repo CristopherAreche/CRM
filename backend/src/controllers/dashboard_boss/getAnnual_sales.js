@@ -4,7 +4,6 @@ module.exports = async (id) => {
   const tiempoTranscurrido = Date.now();
   const endDate = new Date(tiempoTranscurrido);
   const startDate = new Date(tiempoTranscurrido - 31536000000);
-  console.log("ID EN LINEA 8 GETANUAL_SALES", id);
 
   const sales = await prisma.saleProduct.findMany({
     where: {
@@ -28,8 +27,6 @@ module.exports = async (id) => {
       },
     },
   });
-  console.log("ESTO ES SALES EN LINEA 34 GET ANUAL_SALES", sales);
-
   let annual_sales = {};
   const month = [
     "January",

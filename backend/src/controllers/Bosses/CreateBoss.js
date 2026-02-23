@@ -3,6 +3,7 @@ const { sendMail } = require("../email/email.js");
 const bcrypt = require("bcryptjs");
 const fs = require("fs");
 const uploadFile = require("../../firebase.js");
+const { sanitizeBoss } = require("../utils/sanitizeUser.js");
 
 const createBoss = async (data, path) => {
   if (data.password === null) data.password = "12345";
@@ -17,10 +18,7 @@ const createBoss = async (data, path) => {
   }
   const newBoss = await prisma.boss.create({ data: createData });
   sendMail(newBoss);
-  return {
-    ...newBoss,
-    role: "admin",
-  };
+  return sanitizeBoss(newBoss);
 };
 
 module.exports = createBoss;

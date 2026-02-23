@@ -2,6 +2,7 @@
 const createSalesman = require("../controllers/salesman/createSalesman");
 const getAllSalesman = require("../controllers/salesman/getAllSalesman");
 const modifySalesman = require("../controllers/salesman/modifySalesman");
+const logger = require("../logger.js");
 //Aca deberiamos de importar nuestros controllers
 
 //----------------------------------- HANDLERS GETS -----------------------------------\\
@@ -10,7 +11,7 @@ const getSalemans = async (req, res) => {
     const response = await getAllSalesman(req.query);
     res.status(200).json(response);
   } catch (error) {
-    console.log("Error en salesmanhandler", error);
+    logger.error("getSalemans failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };
@@ -32,7 +33,7 @@ const postSaleman = async (req, res) => {
       res.status(400).send("No ha relacionado a ningun Jefe");
     }
   } catch (error) {
-    console.log("Error en salesmanhandler", error);
+    logger.error("postSaleman failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };
@@ -40,7 +41,6 @@ const postSaleman = async (req, res) => {
 //----------------------------------- HANDLERS PUT -----------------------------------\\
 const putSaleman = async (req, res) => {
   const data = JSON.parse(req.body.sellerData);
-  console.log(data);
   try {
     if (req.file) {
       var response = await modifySalesman(data, req.file.path);
@@ -49,7 +49,7 @@ const putSaleman = async (req, res) => {
     }
     res.status(200).send(response);
   } catch (error) {
-    console.log("Error en salesmanhandler", error);
+    logger.error("putSaleman failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };

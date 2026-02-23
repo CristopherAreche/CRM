@@ -5,19 +5,26 @@ const getAllClients = require("../controllers/clients/getAllClients.js");
 const getClientById = require("../controllers/clients/getClientById.js");
 const updateClient = require("../controllers/clients/putClient.js");
 const createClient = require("../controllers/clients/createClient.js");
+const logger = require("../logger.js");
 //----------------------------------- HANDLERS GETS -----------------------------------\\
 const getClients = async (req, res) => {
-  const { id, salesmanId, bossId } = req.query;
+  const { id, salesmanId, bossId, page, limit, search } = req.query;
   try {
     if (id) {
       const resultado = await getClientById(id);
       res.json(resultado);
     } else {
-      const resultadoFinal = await getAllClients({ salesmanId, bossId });
+      const resultadoFinal = await getAllClients({
+        salesmanId,
+        bossId,
+        page,
+        limit,
+        search,
+      });
       res.json(resultadoFinal);
     }
   } catch (error) {
-    console.log(error);
+    logger.error("getClients failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };

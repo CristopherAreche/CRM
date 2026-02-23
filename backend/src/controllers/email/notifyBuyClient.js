@@ -1,23 +1,12 @@
-const nodemailer = require("nodemailer");
+const { createTransporter, resolveSender } = require("./transporter.js");
+const logger = require("../../logger.js");
 
 // NOTIFICACION AL DE PAGO AL CLIENTE, CUANDO EL ESTADO ESTE CONCRETADO, INFORMARLE AL CLIENTE EL PRODCUTO COMPRADO, MONTO, CANTIDAD, ETC
 
-const createTrans = () => {
-  const transporter = nodemailer.createTransport({
-    service: "Gmail", // true for 465, false for other ports
-    auth: {
-      user: "jhohanjianpierre@gmail.com",
-      pass: "ifhpwgudrixwaxxw",
-    },
-  });
-  return transporter;
-};
-
 const sendMail = async (client, salesman, product, sale_product) => {
-  // revisar quien es user
-  const transporter = createTrans();
+  const transporter = createTransporter();
   const info = await transporter.sendMail({
-    from: '"Equipo de desarrollo CRM" <pfcrm23@gmail.com>',
+    from: `"Equipo de desarrollo CRM" <${resolveSender()}>`,
     to: client.email, //Se debe de colocar el correo del cliente
     subject: `Compra del Producto!`,
     text: `Compra realizada correctamente!`, // plain text body
@@ -112,7 +101,7 @@ const sendMail = async (client, salesman, product, sale_product) => {
 
 </html>`, // html body
   });
-  console.log("Message sent: %s", info.messageId);
+  logger.info("Purchase email sent", { messageId: info.messageId, email: client.email });
   return;
 };
 

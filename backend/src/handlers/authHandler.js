@@ -1,12 +1,13 @@
 const findUser = require("../controllers/auth/findUser.js");
 const validate = require("../controllers/auth/validacion.js");
+const logger = require("../logger.js");
 
 const loginUser = async (req, res) => {
   try {
     let response = await findUser(req.body);
     return res.json(response);
   } catch (error) {
-    console.log(error);
+    logger.error("loginUser failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };
@@ -15,7 +16,7 @@ const validateUser = async (req, res) => {
     let response = await validate(req.body);
     return res.json(response);
   } catch (error) {
-    console.log(error);
+    logger.error("validateUser failed", { error: error.message });
     res.status(400).json({ error: error.message });
   }
 };

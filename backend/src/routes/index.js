@@ -12,23 +12,30 @@ const taskRouter = require("./TaskRouter.js");
 const categoryRouter = require("./categoryRouter.js");
 const dashboard_salesmanRouter = require("./dashboard_salesmanRouter.js");
 const dashboard_bossRouter = require("./dashboard_bossRouter.js");
-const paymentRouter = require('./paymentRouter.js');
+const paymentRouter = require("./paymentRouter.js");
+const authMiddleware = require("../middlewares/authMiddleware.js");
 
 const router = Router();
-// Configurar los routers
-// Ejemplo: router.use('/auth', authRouter);
-router.use("/", bossRouter);
-router.use("/", salemans);
-router.use("/", clientsRouter);
-router.use("/", activityRouter);
-router.use("/", productsRouter);
-router.use("/", feedbacks);
-router.use("/", sale_productsRouter);
-router.use("/", taskRouter);
-router.use("/", categoryRouter);
-router.use("/", dashboard_salesmanRouter);
+
+router.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+// Public routes
 router.use("/", loginRouter);
-router.use("/", dashboard_bossRouter);
-router.use('/', paymentRouter);
+router.use("/", bossRouter);
+router.use("/", feedbacks);
+router.use("/", paymentRouter);
+
+// Protected routes
+router.use("/", authMiddleware, salemans);
+router.use("/", authMiddleware, clientsRouter);
+router.use("/", authMiddleware, activityRouter);
+router.use("/", authMiddleware, productsRouter);
+router.use("/", authMiddleware, sale_productsRouter);
+router.use("/", authMiddleware, taskRouter);
+router.use("/", authMiddleware, categoryRouter);
+router.use("/", authMiddleware, dashboard_salesmanRouter);
+router.use("/", authMiddleware, dashboard_bossRouter);
 
 module.exports = router;

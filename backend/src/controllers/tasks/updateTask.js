@@ -13,7 +13,6 @@ module.exports = async (data) => {
     data: dataAct,
   });
 
-  console.log(resultado);
   if (resultado) {
     const task = await getTasks({ id });
     return task;

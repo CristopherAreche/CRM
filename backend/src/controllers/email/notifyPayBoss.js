@@ -1,24 +1,13 @@
-const nodemailer = require("nodemailer");
+const { createTransporter, resolveSender } = require("./transporter.js");
+const logger = require("../../logger.js");
 
 // NOTIFICACION AL JEFE QUE REALIZO SU PAGO CORRECTAMENTE
 
-const createTrans = () => {
-  const transporter = nodemailer.createTransport({
-    service: "Gmail", // true for 465, false for other ports
-    auth: {
-      user: "jhohanjianpierre@gmail.com",
-      pass: "ifhpwgudrixwaxxw",
-    },
-  });
-  return transporter;
-};
-
 const sendMail = async (boss, pay) => {
-  // revisar quien es user
-  const transporter = createTrans();
+  const transporter = createTransporter();
   const info = await transporter.sendMail({
-    from: '"Equipo de desarrollo CRM" <pfcrm23@gmail.com>',
-    to: "pfcrm23@gmail.com", //Se supone que es el correo del jefe, es igual que el de PayPal?
+    from: `"Equipo de desarrollo CRM" <${resolveSender()}>`,
+    to: boss.email,
     subject: `Su pago se ha realizado correctamente!`,
     text: `Pago del Servicio CRM`, // plain text body
     html: `<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -122,7 +111,7 @@ const sendMail = async (boss, pay) => {
 
 </html>`, // html body
   });
-  console.log("Message sent: %s", info.messageId);
+  logger.info("Payment confirmation email sent", { messageId: info.messageId, email: boss.email });
   return;
 };
 

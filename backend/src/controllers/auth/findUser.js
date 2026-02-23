@@ -2,12 +2,14 @@ const prisma = require("../../prisma.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const createBoss = require("../Bosses/CreateBoss.js");
+const { sanitizeByRole } = require("../utils/sanitizeUser.js");
 
 const createToken = (user, role) => {
+  const safeUser = sanitizeByRole(user, role);
   const token = jwt.sign(
     {
       exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
-      ...user,
+      ...safeUser,
       role,
     },
     process.env.JWT_SECRET

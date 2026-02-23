@@ -1,23 +1,12 @@
-const nodemailer = require("nodemailer");
+const { createTransporter, resolveSender } = require("./transporter.js");
+const logger = require("../../logger.js");
 
 // NOTIFICACION CLIENTE PARA SOLICITAR UN FEEDBACK HACIA EL VENDEDOR
 
-const createTrans = () => {
-  const transporter = nodemailer.createTransport({
-    service: "Gmail", // true for 465, false for other ports
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-  return transporter;
-};
-
 const sendMailFeedback = async (salesman, client, activity) => {
-  // revisar quien es user
-  const transporter = createTrans();
+  const transporter = createTransporter();
   const info = await transporter.sendMail({
-    from: '"Equipo de desarrollo CRM" <pfcrm23@gmail.com>',
+    from: `"Equipo de desarrollo CRM" <${resolveSender()}>`,
     to: client.email, //DEBE DE IR EL CORREO DEL CLIENTE
     subject: `Dar una valoración al vendedor!`,
     text: `Gracias por haberte contactado con nosotros!`, // plain text body
@@ -113,7 +102,7 @@ const sendMailFeedback = async (salesman, client, activity) => {
 
 </html>`, // html body
   });
-  console.log("Message sent: %s", info.messageId);
+  logger.info("Feedback request email sent", { messageId: info.messageId, email: client.email });
   return;
 };
 

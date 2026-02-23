@@ -6,6 +6,7 @@ const {
   postProduct,
   putProduct,
 } = require("../handlers/productsHandler");
+const authorize = require("../middlewares/roleMiddleware.js");
 
 const productsRouter = Router();
 
@@ -19,8 +20,8 @@ const productPutValidation = [
   validate,
 ];
 
-productsRouter.get("/product", getProducts);
-productsRouter.post("/product", productPostValidation, postProduct);
-productsRouter.put("/product", productPutValidation, putProduct);
+productsRouter.get("/product", authorize("admin", "seller"), getProducts);
+productsRouter.post("/product", authorize("admin"), productPostValidation, postProduct);
+productsRouter.put("/product", authorize("admin"), productPutValidation, putProduct);
 
 module.exports = productsRouter;

@@ -2,8 +2,9 @@ const { Router } = require("express");
 const { body } = require("express-validator");
 const validate = require("../middlewares/validate.js");
 const { getBoss, postBoss, putBoss } = require("../handlers/bossHandler");
-
 const validateBoss = require("../middlewares/validateBoss.js");
+const authMiddleware = require("../middlewares/authMiddleware.js");
+const authorize = require("../middlewares/roleMiddleware.js");
 
 const bossRouter = Router();
 
@@ -17,8 +18,8 @@ const bossPutValidation = [
   validate,
 ];
 
-bossRouter.get("/boss", getBoss);
+bossRouter.get("/boss", authMiddleware, authorize("admin", "seller"), getBoss);
 bossRouter.post("/boss", bossPostValidation, validateBoss, postBoss);
-bossRouter.put("/boss", bossPutValidation, putBoss);
+bossRouter.put("/boss", authMiddleware, authorize("admin", "seller"), bossPutValidation, putBoss);
 
 module.exports = bossRouter;

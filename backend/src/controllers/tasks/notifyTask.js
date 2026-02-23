@@ -1,5 +1,6 @@
 const prisma = require("../../prisma.js");
 const { sendMail } = require("../email/notifyActivityExpiration.js");
+const logger = require("../../logger.js");
 
 const fu = async () => {
   let tasks = await prisma.task.findMany();
@@ -67,6 +68,6 @@ module.exports = async () => {
       client = {};
     }
   } catch (error) {
-    console.error(error);
+    logger.error("notifyTask failed", { error: error.message });
   }
 };

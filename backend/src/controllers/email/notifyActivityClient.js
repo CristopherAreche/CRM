@@ -1,27 +1,17 @@
-const nodemailer = require("nodemailer");
 const { unmapMethod, unmapState } = require("../utils/enumMaps.js");
+const { createTransporter, resolveSender } = require("./transporter.js");
+const logger = require("../../logger.js");
 
 // NOTIFICACION AL CLIENTE CUANDO CAMBIA SU ESTADO DE NEGOCIACION
 
 // SE LE DEBE DE NOTICIAR AL CLIENTE DE PARTE DEL VENDEDOR
 
-const createTrans = () => {
-  const transporter = nodemailer.createTransport({
-    service: "Gmail", // true for 465, false for other ports
-    //CORREOS DEL VENDEDOR
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-  return transporter;
-};
 //lo que recibimos tambien en activity={method,state,from,to,message,subject,attached,clientId,salesmanId,}
 const sendMail = async (salesman, client, activity, estado) => {
   activity = { ...activity, method: unmapMethod(activity.method), state: unmapState(activity.state) };
-  const transporter = createTrans(); //introducir como parametro el correo y la contra del vendedor // EIMINE DE LOS PARAMMETROS DE createTrans() salesman
+  const transporter = createTransporter();
   const info = await transporter.sendMail({
-    from: '"Equipo de desarrollo CRM" <pfcrm23@gmail.com>',
+    from: `"Equipo de desarrollo CRM" <${resolveSender()}>`,
     to: client.email, //Aqui se le envia al cliente RECORDAR COLOCAR `${client.email}`
     subject:
       estado === "creacion"
@@ -132,7 +122,7 @@ const sendMail = async (salesman, client, activity, estado) => {
 
 </html>`, // html body
   });
-  console.log("Message sent: %s", info.messageId);
+  logger.info("Activity notification sent", { messageId: info.messageId, email: client.email });
   return;
 };
 

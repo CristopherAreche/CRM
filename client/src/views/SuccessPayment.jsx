@@ -3,30 +3,39 @@ import LightsSvg from "../components/LightsSvg";
 import { Link, useNavigate } from "react-router-dom";
 import { RiArrowLeftLine } from "react-icons/ri";
 import Cookies from "universal-cookie";
-import { jwtVerify } from "jose";
+import { decodeJwt } from "jose";
 import { useDispatch } from "react-redux";
 import { persistenceLogin } from "../app/features/authSlice";
 
 const SuccessPayment = () => {
   const navigate = useNavigate();
 
-  const cookies = new Cookies();
-  const myToken = cookies.get("myToken");
+  const myToken = new Cookies().get("myToken");
   const dispatch = useDispatch();
 
-  const persitenceAuth = async (token) => {
-    const { payload } = await jwtVerify(
-      token,
-      new TextEncoder().encode("secret")
-    );
-    return payload;
+  const persitenceAuth = (token) => {
+    try {
+      const payload = decodeJwt(token);
+      if (!payload.exp || payload.exp * 1000 <= Date.now()) return null;
+      return payload;
+    } catch (error) {
+      return null;
+    }
   };
 
   useEffect(() => {
-    if (myToken === undefined) {
+    if (!myToken) {
       navigate("/authentication");
     } else {
-      persitenceAuth(myToken).then((res) => dispatch(persistenceLogin(res)));
+      const payload = persitenceAuth(myToken);
+
+      if (!payload) {
+        new Cookies().remove("myToken", { path: "/" });
+        navigate("/authentication");
+        return;
+      }
+
+      dispatch(persistenceLogin(payload));
     }
   }, [dispatch, myToken, navigate]);
 
